@@ -1,6 +1,6 @@
-package TicTacToe;
+package com.Info6205.TicTacToe.TicTacToe;
 
-import ArtificialIntelligence.Algorithms;
+import com.Info6205.TicTacToe.ArtificialIntelligence.Algorithms;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -56,8 +56,9 @@ public class GameInterface extends JFrame {
         BufferedImage image;
 
         try {
-            path = ".." + File.separator + "Img" + File.separator + path + ".png";
-            image = ImageIO.read(GameInterface.class.getResource(path));
+            path = "./src/main/java/com/Info6205/TicTacToe/Img/" + path + ".png";
+            File file = new File(path);
+            image = ImageIO.read(file);
         } catch (IOException ex) {
             throw new RuntimeException("Image could not be loaded.");
         }

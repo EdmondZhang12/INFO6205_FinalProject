@@ -1,4 +1,4 @@
-package TicTacToe;
+package com.Info6205.TicTacToe.TicTacToe;
 
 import java.util.HashSet;
 
