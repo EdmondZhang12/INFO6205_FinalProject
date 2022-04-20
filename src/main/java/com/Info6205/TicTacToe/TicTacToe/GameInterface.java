@@ -23,7 +23,7 @@ public class GameInterface extends JFrame {
     private final Board board;
     private final Panel panel;
     private BufferedImage imageBackground, imageX, imageO;
-    private final Mode mode;
+    public final Mode mode;
 
     /**
      * The center location of each of the cells is stored here.
@@ -36,7 +36,7 @@ public class GameInterface extends JFrame {
      *
      * @param mode the game mode (Player vs. Player or Player vs. AI)
      */
-    private GameInterface(Mode mode) {
+    public GameInterface(Mode mode) {
         this.mode = mode;
         board = new Board();
         loadCells();
@@ -64,22 +64,6 @@ public class GameInterface extends JFrame {
         }
 
         return image;
-    }
-
-    public static void main(String[] args) {
-        //Todo: Select different game modes by value form last interface
-        String mode = "pvp";
-        if (mode.equals("pvp")) {
-            System.out.println("Game Mode: Player vs. Player");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.PvP));
-        } else if (mode.equals("pve")) {
-            System.out.println("Game Mode: Player vs. AI");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.PvE));
-        } else {
-            //Todo: is it necessary?
-            System.out.println("Game Mode: AI vs. AI");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.NonPlayer));
-        }
     }
 
     /**
@@ -133,7 +117,7 @@ public class GameInterface extends JFrame {
         imageO = getImage("o");
     }
 
-    private enum Mode {PvP, PvE, NonPlayer}
+    public enum Mode {PvP, PvE}
 
     /**
      * Used for drawing Tic Tac Toe to the screen.
