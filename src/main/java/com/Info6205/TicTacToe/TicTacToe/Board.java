@@ -17,7 +17,7 @@ public class Board {
     /**
      * Construct the Tic Tac Toe board.
      */
-    Board() {
+    public Board() {
         board = new State[BOARD_WIDTH][BOARD_WIDTH];
         movesAvailable = new HashSet<>();
         reset();
@@ -44,7 +44,7 @@ public class Board {
     /**
      * Restart the game with a new blank board.
      */
-    void reset() {
+    public void reset() {
         moveCount = 0;
         gameOver = false;
         playersTurn = State.X;
@@ -114,7 +114,7 @@ public class Board {
      *
      * @return the board array
      */
-    State[][] toArray() {
+    public State[][] toArray() {
         return board.clone();
     }
 
