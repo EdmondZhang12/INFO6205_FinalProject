@@ -78,12 +78,14 @@ public class TicTacToeClient extends JFrame implements Runnable{
      * Create a new display for pvp mode
      */
     private void displayArea4pvp(Panel panel) {
-        displayArea = new JTextArea(4, 30); // set up JTextArea
+        // 下面显示内容
+        displayArea = new JTextArea(4, 20); // set up JTextArea
         displayArea.setEditable(false);
-        add(new JScrollPane(displayArea), BorderLayout.SOUTH);
+        add(new JScrollPane(displayArea), BorderLayout.PAGE_END);
+
         JPanel panel2 = new JPanel(); // set up panel to contain boardPanel
         panel2.add(panel, BorderLayout.CENTER); // add board panel
-        add(panel2, BorderLayout.CENTER); // add container panel
+        add(panel, BorderLayout.CENTER); // add container panel
         idField = new JTextField(); // set up textfield
         idField.setEditable(false);
         add(idField, BorderLayout.NORTH);
@@ -136,15 +138,23 @@ public class TicTacToeClient extends JFrame implements Runnable{
     private void processMessage(String message) {
         // valid move occurred
         switch (message) {
+            case "Valid move.":
+                displayMessage("Valid move, please wait.\n");
+                break;
             case "Opponent moved":
                 int location = input.nextInt(); // get move location
                 input.nextLine(); // skip newline after int location
                 // repaint panel
                 board.move(location);
                 panel.repaint();
-                System.out.println(location);
                 displayMessage("Opponent moved. Your turn.\n");
                 myTurn = true; // now this client's turn
+                break;
+            case "DEFEAT":
+            case "TIE":
+            case "VICTORY":
+                //  Game is over, display the results and stop game
+                displayMessage(message + "\n"); // display the message
                 break;
         }
     }
@@ -326,6 +336,9 @@ public class TicTacToeClient extends JFrame implements Runnable{
             super.mouseClicked(e);
 
             if (board.isGameOver()) {
+                if(mode == Mode.PvP) {
+                    System.exit(1);
+                }
                 board.reset();
                 panel.repaint();
             } else if (myTurn) {
@@ -341,7 +354,6 @@ public class TicTacToeClient extends JFrame implements Runnable{
          */
         private void playerMove(MouseEvent e) {
             int move = getMove(e.getPoint());
-            System.out.print(move);
             if (!board.isGameOver() && move != -1) {
                 boolean validMove = board.move(move);
                 if (validMove) {
