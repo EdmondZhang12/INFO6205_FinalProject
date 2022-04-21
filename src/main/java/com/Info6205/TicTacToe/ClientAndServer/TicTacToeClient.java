@@ -11,11 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Formatter;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class Client extends JFrame {
+public class TicTacToeClient extends JFrame implements Runnable{
 
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
@@ -28,6 +31,8 @@ public class Client extends JFrame {
     private final Panel panel;
     private BufferedImage imageBackground, imageX, imageO;
     public  Mode mode;
+    private JTextArea displayArea; // JTextArea to display output
+    private JTextField idField; // textfield to display player's mark
 
     // parameter for server
     private Socket connection; // connection to server
@@ -49,14 +54,17 @@ public class Client extends JFrame {
      *  @param playMode the game mode (Player vs. Player or Player vs. AI)
      * @param host
      */
-    public Client(String playMode, String host) {
+    public TicTacToeClient(String playMode, String host) {
         board = new Board();
         loadCells();
         panel = createPanel();
         setWindowProperties();
         loadImages();
         if(playMode.equals("pvp")) {
+            // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
+            displayArea4pvp(panel);
+            startClient();
         } else {
             this.mode = Mode.PvE;
         }
@@ -64,6 +72,77 @@ public class Client extends JFrame {
         this.ticTacToeHost = host;
         // Set up the gameInterface
     }
+
+    /**
+     * Create a new display for pvp mode
+     */
+    private void displayArea4pvp(Panel panel) {
+        JPanel panel2 = new JPanel(); // set up panel to contain boardPanel
+        panel2.add(panel, BorderLayout.CENTER); // add board panel
+        add(panel2, BorderLayout.CENTER); // add container panel
+        idField = new JTextField(); // set up textfield
+        idField.setEditable(false);
+        add(idField, BorderLayout.NORTH);
+    }
+
+    /**
+     * start the client thread
+     */
+    private void startClient() {
+        // connect to server and get streams
+        try {
+            // make connection to server
+            connection = new Socket(InetAddress.getByName(ticTacToeHost), 12345);
+
+            // get streams for input and output
+            input = new Scanner(connection.getInputStream());
+            output = new Formatter(connection.getOutputStream());
+        } catch (IOException ioException) {
+            System.out.println(ioException.toString());
+        }
+
+        // create and start worker thread for this client
+        ExecutorService worker = Executors.newFixedThreadPool(1);
+        worker.execute(this); // execute client
+    }
+
+    /**
+     * The Player’s run method controls the information that is sent to and
+     * received from the client.
+     */
+    @Override
+    public void run() {
+        myMark = input.nextLine(); // get player's mark (X or O)
+        SwingUtilities.invokeLater(() -> {
+            // display player's mark
+            idField.setText("You are player \"" + myMark + "\"");
+        });
+
+        myTurn = (myMark.equals(X_MARK)); // determine if client's turn
+
+        // receive messages sent to client and output them
+        while (true) {
+            if (input.hasNextLine()) {
+                processMessage(input.nextLine());
+            }
+        }
+    }
+
+    // process messages sent to the client
+    private void processMessage(String message) {
+        // valid move occurred
+        switch (message) {
+        }
+    }
+
+    // manipulate displayArea in event-dispatch thread
+    private void displayMessage(final String messageToDisplay) {
+        SwingUtilities.invokeLater(() -> {
+            displayArea.append(messageToDisplay); // updates output
+        });
+    }
+
+
 
     /**
      * Helper method for grabbing the images from the disk.
@@ -184,8 +263,8 @@ public class Client extends JFrame {
          *
          * @param g the Graphics object that will perform the panting
          */
+        Board.State[][] boardArray = board.toArray();
         private void paintBoard(Graphics2D g) {
-            Board.State[][] boardArray = board.toArray();
 
             int offset = 20;
 
@@ -248,6 +327,7 @@ public class Client extends JFrame {
          */
         private void playerMove(MouseEvent e) {
             int move = getMove(e.getPoint());
+            System.out.println(move); // 输出数字从 0 - 8
             if (!board.isGameOver() && move != -1) {
                 boolean validMove = board.move(move);
                 if (mode == Mode.PvE && validMove && !board.isGameOver()) {
@@ -255,6 +335,16 @@ public class Client extends JFrame {
                 }
                 panel.repaint();
             }
+        }
+
+        //todo 通过传递的数字判断 X,Y
+        private void playerMove(int opponentMove) {
+
+            int move = opponentMove;
+            if (!board.isGameOver() && move != -1) {
+                boolean validMove = board.move(move);
+            }
+            panel.repaint();
         }
 
         /**
