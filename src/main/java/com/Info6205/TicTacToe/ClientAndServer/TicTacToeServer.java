@@ -42,16 +42,13 @@ public class TicTacToeServer extends JFrame {
     private final Condition otherPlayerConnected; // to wait for other player
     private final Condition otherPlayerTurn; // to wait for other player's turn
 
-    /**
-     * set up tic-tac-toe server and GUI that displays messages
-     */
+    // set up tic-tac-toe server and GUI that displays messages
     public TicTacToeServer() {
         super("Tic-Tac-Toe Server"); // set title of window
 
         // create ExecutorService with a thread for each player
         runGame = Executors.newFixedThreadPool(2);
-        // create lock for game
-        gameLock = new ReentrantLock();
+        gameLock = new ReentrantLock(); // create lock for game
 
         // condition variable for both players being connected
         otherPlayerConnected = gameLock.newCondition();
@@ -72,10 +69,11 @@ public class TicTacToeServer extends JFrame {
             System.exit(1);
         }
 
-        outputArea = new JTextArea(); // create JTextArea for output
+        // create JTextArea for output
+        outputArea = new JTextArea();
         add(outputArea, BorderLayout.CENTER);
         outputArea.setText("Server awaiting connections\n");
-        // set size of window, same with client
+        outputArea.setEditable(false);
         setSize(600, 600);
         setVisible(true);
     }
@@ -115,7 +113,10 @@ public class TicTacToeServer extends JFrame {
         }
     }
 
-    // display message in outputArea
+    /**
+     *
+     * @param messageToDisplay display message in outputArea
+     */
     private void displayMessage(final String messageToDisplay) {
         // display message from event-dispatch thread of execution
         SwingUtilities.invokeLater(() -> {
@@ -125,12 +126,103 @@ public class TicTacToeServer extends JFrame {
     }
 
     /**
-     * private inner class Player manages each Player as a runnable
+     *
+     * @param location check if occupied
+     * @param player check if current player
+     * @return
      */
+    public boolean validateAndMove(int location, int player) {
+        // while not current player, must wait for turn
+        while (player != currentPlayer) {
+            // lock game to wait for other player to go
+            gameLock.lock();
+            try {
+                // wait for player's turn
+                otherPlayerTurn.await();
+            } catch (InterruptedException exception) {
+                System.out.println(exception.toString());
+            } finally {
+                // unlock game after waiting
+                gameLock.unlock();
+            }
+        }
+
+        // if location not occupied, make move
+        if (!isOccupied(location)) {
+            board[location] = MARKS[currentPlayer]; // set move on board
+            currentPlayer = (currentPlayer + 1) % 2; // change player
+
+            // let new current player know that move occurred
+            players[currentPlayer].otherPlayerMoved(location);
+
+            // lock game to signal other player to go
+            gameLock.lock();
+
+            try {
+                // signal other player to continue
+                otherPlayerTurn.signal();
+            } finally {
+                // unlock game after signaling
+                gameLock.unlock();
+            }
+            // notify player that move was valid
+            return true;
+        } else {
+            // move was not valid
+            return false;
+        }
+    }
+
+    /**
+     *
+     * @param location determine whether location is occupied
+     * @return
+     */
+    public boolean isOccupied(int location) {
+        return board[location].equals(MARKS[PLAYER_X]) || board[location].equals(MARKS[PLAYER_O]);
+    }
+
+    /**
+     * Check if there is 3 of the same marks in a row.
+     *
+     * @return True if there is a winner, false if there is not a winner.
+     */
+    public boolean hasWinner() {
+        return (!board[0].isEmpty() && board[0].equals(board[1]) && board[0].equals(board[2]))
+                || (!board[3].isEmpty() && board[3].equals(board[4]) && board[3].equals(board[5]))
+                || (!board[6].isEmpty() && board[6].equals(board[7]) && board[6].equals(board[8]))
+                || (!board[0].isEmpty() && board[0].equals(board[3]) && board[0].equals(board[6]))
+                || (!board[1].isEmpty() && board[1].equals(board[4]) && board[1].equals(board[7]))
+                || (!board[2].isEmpty() && board[2].equals(board[5]) && board[2].equals(board[8]))
+                || (!board[0].isEmpty() && board[0].equals(board[4]) && board[0].equals(board[8]))
+                || (!board[2].isEmpty() && board[2].equals(board[4]) && board[2].equals(board[6]));
+    }
+
+    /**
+     * Check if the game board is full.
+     *
+     * @return True if the board is full, false if there is an empty slot.
+     */
+    public boolean boardFilledUp() {
+        for (int i = 0; i < board.length; ++i) {
+            if (board[i].isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // place code in this method to determine whether game over
+    public boolean isGameOver() {
+        return hasWinner() || boardFilledUp();
+    }
+
+    // private inner class Player manages each Player as a runnable
     private class Player implements Runnable {
 
         private final Socket connection; // connection to client
-        private Scanner                                                                                                                      input; // input from client
+        private Scanner input; // input from client
         private Formatter output; // output to client
         private final int playerNumber; // tracks which player this is
         private final String mark; // mark for this player
@@ -152,13 +244,13 @@ public class TicTacToeServer extends JFrame {
             }
         }
 
-        /**
-         *
-         * @param location send message that other player moved
-         */
-        //
+        // send message that other player moved
         public void otherPlayerMoved(int location) {
-            // todo
+            output.format("Opponent moved\n");
+            output.format("%d\n", location); // send location of move
+            output.flush(); // flush output
+            output.format(hasWinner() ? "DEFEAT\n" : boardFilledUp() ? "TIE\n" : "");
+            output.flush();
         }
 
         // control thread's execution
@@ -197,7 +289,27 @@ public class TicTacToeServer extends JFrame {
                     output.flush(); // flush output
                 }
 
+                // while game not over
+                while (!isGameOver()) {
+                    int location = 0; // initialize move location
 
+                    if (input.hasNext()) {
+                        // get move location
+                        location = input.nextInt();
+                    }
+                    // check for valid move
+                    if (validateAndMove(location, playerNumber)) {
+                        displayMessage("\nlocation: " + location);
+                        output.format("Valid move.\n"); // notify client
+                        output.flush(); // flush output
+                        output.format(hasWinner() ? "VICTORY\n" : boardFilledUp() ? "TIE\n" : "");
+                        output.flush();
+                    } else {
+                        // move was invalid
+                        output.format("Invalid move, try again\n");
+                        output.flush(); // flush output
+                    }
+                }
             } finally {
                 try {
                     connection.close(); // close connection to client

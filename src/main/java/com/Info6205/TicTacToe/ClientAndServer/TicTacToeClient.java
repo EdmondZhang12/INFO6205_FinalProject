@@ -55,6 +55,7 @@ public class TicTacToeClient extends JFrame implements Runnable{
      * @param host
      */
     public TicTacToeClient(String playMode, String host) {
+        myTurn = true;
         board = new Board();
         loadCells();
         panel = createPanel();
@@ -77,6 +78,9 @@ public class TicTacToeClient extends JFrame implements Runnable{
      * Create a new display for pvp mode
      */
     private void displayArea4pvp(Panel panel) {
+        displayArea = new JTextArea(4, 30); // set up JTextArea
+        displayArea.setEditable(false);
+        add(new JScrollPane(displayArea), BorderLayout.SOUTH);
         JPanel panel2 = new JPanel(); // set up panel to contain boardPanel
         panel2.add(panel, BorderLayout.CENTER); // add board panel
         add(panel2, BorderLayout.CENTER); // add container panel
@@ -132,6 +136,16 @@ public class TicTacToeClient extends JFrame implements Runnable{
     private void processMessage(String message) {
         // valid move occurred
         switch (message) {
+            case "Opponent moved":
+                int location = input.nextInt(); // get move location
+                input.nextLine(); // skip newline after int location
+                // repaint panel
+                board.move(location);
+                panel.repaint();
+                System.out.println(location);
+                displayMessage("Opponent moved. Your turn.\n");
+                myTurn = true; // now this client's turn
+                break;
         }
     }
 
@@ -314,7 +328,7 @@ public class TicTacToeClient extends JFrame implements Runnable{
             if (board.isGameOver()) {
                 board.reset();
                 panel.repaint();
-            } else {
+            } else if (myTurn) {
                 playerMove(e);
             }
 
@@ -327,24 +341,20 @@ public class TicTacToeClient extends JFrame implements Runnable{
          */
         private void playerMove(MouseEvent e) {
             int move = getMove(e.getPoint());
-            System.out.println(move); // 输出数字从 0 - 8
+            System.out.print(move);
             if (!board.isGameOver() && move != -1) {
                 boolean validMove = board.move(move);
-                if (mode == Mode.PvE && validMove && !board.isGameOver()) {
-                    Algorithms.miniMax(board);
+                if (validMove) {
+                    if(mode == Mode.PvE) {
+                        Algorithms.miniMax(board);
+                    } else if(mode == Mode.PvP) {
+                        output.format("%d\n", move);
+                        output.flush();
+                        myTurn = false; // not my turn any more
+                    }
                 }
                 panel.repaint();
             }
-        }
-
-        //todo 通过传递的数字判断 X,Y
-        private void playerMove(int opponentMove) {
-
-            int move = opponentMove;
-            if (!board.isGameOver() && move != -1) {
-                boolean validMove = board.move(move);
-            }
-            panel.repaint();
         }
 
         /**
