@@ -155,7 +155,13 @@ public class TicTacToeClient extends JFrame implements Runnable{
             case "VICTORY":
                 //  Game is over, display the results and stop game
                 displayMessage(message + "\n"); // display the message
+                myTurn = false;
                 break;
+            default:
+                //  Game is over, display the results and stop game
+                displayMessage(message + "\n"); // display the message
+                break;
+
         }
     }
 
