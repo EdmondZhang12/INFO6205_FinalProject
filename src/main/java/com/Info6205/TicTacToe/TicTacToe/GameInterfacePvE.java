@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GameInterface extends JFrame {
+public class GameInterfacePvE extends JFrame {
 
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
@@ -36,7 +36,7 @@ public class GameInterface extends JFrame {
      *
      * @param mode the game mode (Player vs. Player or Player vs. AI)
      */
-    private GameInterface(Mode mode) {
+    private GameInterfacePvE(Mode mode) {
         this.mode = mode;
         board = new Board();
         loadCells();
@@ -66,19 +66,19 @@ public class GameInterface extends JFrame {
         return image;
     }
 
-    public static void main(String[] args) {
+    public static void main() {
         //Todo: Select different game modes by value form last interface
-        String mode = "pvp";
+        String mode = "pve";
         if (mode.equals("pvp")) {
             System.out.println("Game Mode: Player vs. Player");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.PvP));
+            SwingUtilities.invokeLater(() -> new GameInterfacePvE(Mode.PvP));
         } else if (mode.equals("pve")) {
             System.out.println("Game Mode: Player vs. AI");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.PvE));
+            SwingUtilities.invokeLater(() -> new GameInterfacePvE(Mode.PvE));
         } else {
             //Todo: is it necessary?
             System.out.println("Game Mode: AI vs. AI");
-            SwingUtilities.invokeLater(() -> new GameInterface(Mode.NonPlayer));
+            SwingUtilities.invokeLater(() -> new GameInterfacePvE(Mode.NonPlayer));
         }
     }
 
