@@ -5,18 +5,18 @@ import com.Info6205.TicTacToe.TicTacToe.Board;
 /**
  * Plays a random move in Tic Tac Toe.
  */
-class Random {
+public class Random {
 
     /**
      * Random cannot be instantiated.
      */
-    private Random () {}
+    public Random () {}
 
     /**
      * Execute the algorithm.
      * @param board     the Tic Tac Toe board to play on
      */
-    static void run (Board board) {
+    public static void run(Board board) {
         int[] moves = new int[board.getAvailableMoves().size()];
         int index = 0;
 
