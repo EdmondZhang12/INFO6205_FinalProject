@@ -16,7 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TicTacToeClient extends JFrame implements Runnable{
+public class TicTacToeClient extends JPanel implements Runnable{
 
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
@@ -56,7 +56,7 @@ public class TicTacToeClient extends JFrame implements Runnable{
         board = new Board();
         loadCells();
         panel = createPanel();
-        setWindowProperties();
+        displayArea4pvp(panel);
         if(playMode.equals("pvp")) {
             // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
@@ -189,10 +189,10 @@ public class TicTacToeClient extends JFrame implements Runnable{
      * Set the size, title, visibility etc...
      */
     private void setWindowProperties() {
-        setResizable(false);
-        pack();
-        setTitle("Ava's Tic Tac Toe");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setResizable(false);
+//        pack();
+//        setTitle("Ava's Tic Tac Toe");
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -203,8 +203,8 @@ public class TicTacToeClient extends JFrame implements Runnable{
      */
     private JPanel createPanel() {
         JPanel gameInterface = new GameInterface();
-        Container cp = getContentPane();
-        cp.add(gameInterface);
+//        Container cp = getContentPane();
+//        cp.add(gameInterface);
         gameInterface.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         gameInterface.addMouseListener(new MyMouseAdapter());
         board = ((GameInterface) gameInterface).getBoard();

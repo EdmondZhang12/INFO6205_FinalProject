@@ -1,8 +1,10 @@
-package com.Info6205.TicTacToe.ClientAndServer;
+package com.Info6205.TicTacToe.UserInterface;
 
-import javax.swing.*;
+import com.Info6205.TicTacToe.ClientAndServer.TicTacToeServer;
 
-public class TicTacToeServerTest {
+import javax.swing.JFrame;
+
+public class ServerInterface {
 
     public static void main(String[] args) {
         TicTacToeServer application = new TicTacToeServer();
