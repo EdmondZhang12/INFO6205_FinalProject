@@ -2,14 +2,12 @@ package com.Info6205.TicTacToe.ClientAndServer;
 
 import com.Info6205.TicTacToe.ArtificialIntelligence.Algorithms;
 import com.Info6205.TicTacToe.TicTacToe.Board;
+import com.Info6205.TicTacToe.UserInterface.GameInterface;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -27,9 +25,8 @@ public class TicTacToeClient extends JFrame implements Runnable{
      * as a click.
      */
     private static final int DISTANCE = 100;
-    private final Board board;
-    private final Panel panel;
-    private BufferedImage imageBackground, imageX, imageO;
+    private Board board;
+    private final JPanel panel;
     public  Mode mode;
     private JTextArea displayArea; // JTextArea to display output
     private JTextField idField; // textfield to display player's mark
@@ -60,7 +57,6 @@ public class TicTacToeClient extends JFrame implements Runnable{
         loadCells();
         panel = createPanel();
         setWindowProperties();
-        loadImages();
         if(playMode.equals("pvp")) {
             // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
@@ -77,7 +73,7 @@ public class TicTacToeClient extends JFrame implements Runnable{
     /**
      * Create a new display for pvp mode
      */
-    private void displayArea4pvp(Panel panel) {
+    private void displayArea4pvp(JPanel panel) {
         // 下面显示内容
         displayArea = new JTextArea(4, 20); // set up JTextArea
         displayArea.setEditable(false);
@@ -158,7 +154,6 @@ public class TicTacToeClient extends JFrame implements Runnable{
                 myTurn = false;
                 break;
             default:
-                //  Game is over, display the results and stop game
                 displayMessage(message + "\n"); // display the message
                 break;
 
@@ -175,32 +170,10 @@ public class TicTacToeClient extends JFrame implements Runnable{
 
 
     /**
-     * Helper method for grabbing the images from the disk.
-     *
-     * @param path the name of the image
-     * @return the image that was grabbed
-     */
-    private static BufferedImage getImage(String path) {
-
-        BufferedImage image;
-
-        try {
-            path = "./src/main/java/com/Info6205/TicTacToe/Img/" + path + ".png";
-            File file = new File(path);
-            image = ImageIO.read(file);
-        } catch (IOException ex) {
-            throw new RuntimeException("Image could not be loaded.");
-        }
-
-        return image;
-    }
-
-    /**
      * Load the locations of the center of each of the cells.
      */
     private void loadCells() {
         cells = new Point[9];
-
         cells[0] = new Point(109, 109);
         cells[1] = new Point(299, 109);
         cells[2] = new Point(489, 109);
@@ -228,22 +201,14 @@ public class TicTacToeClient extends JFrame implements Runnable{
      *
      * @return the panel with the specified dimensions and mouse listener
      */
-    private Panel createPanel() {
-        Panel panel = new Panel();
+    private JPanel createPanel() {
+        JPanel gameInterface = new GameInterface();
         Container cp = getContentPane();
-        cp.add(panel);
-        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        panel.addMouseListener(new MyMouseAdapter());
-        return panel;
-    }
-
-    /**
-     * Load the image of the background and the images of the X and O
-     */
-    private void loadImages() {
-        imageBackground = getImage("background");
-        imageX = getImage("x");
-        imageO = getImage("o");
+        cp.add(gameInterface);
+        gameInterface.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        gameInterface.addMouseListener(new MyMouseAdapter());
+        board = ((GameInterface) gameInterface).getBoard();
+        return gameInterface;
     }
 
     public enum Mode {PvP, PvE}
@@ -251,92 +216,12 @@ public class TicTacToeClient extends JFrame implements Runnable{
     /**
      * Used for drawing Tic Tac Toe to the screen.
      */
-    private class Panel extends JPanel {
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            paintTicTacToe((Graphics2D) g);
-        }
-
-        /**
-         * The main painting method that paints everything.
-         *
-         * @param g the Graphics object that will perform the panting
-         */
-        private void paintTicTacToe(Graphics2D g) {
-            setProperties(g);
-            paintBoard(g);
-            paintWinner(g);
-        }
-
-        /**
-         * Set the rendering hints of the Graphics object.
-         *
-         * @param g the Graphics object to set the rendering hints on
-         */
-        private void setProperties(Graphics2D g) {
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g.drawImage(imageBackground, 0, 0, null);
-
-            // The first time a string is drawn it tends to lag.
-            // Drawing something trivial at the beginning loads the font up.
-            // Better to lag at the beginning than during the middle of the game.
-            g.drawString("", 0, 0);
-        }
-
-        /**
-         * Paints the background image and the X's and O's.
-         *
-         * @param g the Graphics object that will perform the panting
-         */
-        Board.State[][] boardArray = board.toArray();
-        private void paintBoard(Graphics2D g) {
-
-            int offset = 20;
-
-            for (int y = 0; y < 3; y++) {
-                for (int x = 0; x < 3; x++) {
-                    if (boardArray[y][x] == Board.State.X) {
-                        g.drawImage(imageX, offset + 190 * x, offset + 190 * y, null);
-                    } else if (boardArray[y][x] == Board.State.O) {
-                        g.drawImage(imageO, offset + 190 * x, offset + 190 * y, null);
-                    }
-                }
-            }
-        }
-
-        /**
-         * Paints who won to the screen.
-         *
-         * @param g the Graphics object that will perform the panting
-         */
-        private void paintWinner(Graphics2D g) {
-            if (board.isGameOver()) {
-                g.setColor(new Color(255, 255, 255));
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
-
-                String s;
-
-                if (board.getWinner() == Board.State.Blank) {
-                    s = "Draw";
-                } else {
-                    s = board.getWinner() + " Wins!";
-                }
-
-                g.drawString(s, 300 - getFontMetrics(g.getFont()).stringWidth(s) / 2, 315);
-
-            }
-        }
-    }
 
     /**
      * For detecting mouse clicks.
      */
-    private class MyMouseAdapter extends MouseAdapter {
+    public class MyMouseAdapter extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
             super.mouseClicked(e);

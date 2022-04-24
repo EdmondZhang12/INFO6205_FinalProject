@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GameInterface extends JFrame {
+public class Interface extends JFrame {
 
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
@@ -36,7 +36,7 @@ public class GameInterface extends JFrame {
      *
      * @param mode the game mode (Player vs. Player or Player vs. AI)
      */
-    public GameInterface(Mode mode) {
+    public Interface(Mode mode) {
         this.mode = mode;
         board = new Board();
         loadCells();
