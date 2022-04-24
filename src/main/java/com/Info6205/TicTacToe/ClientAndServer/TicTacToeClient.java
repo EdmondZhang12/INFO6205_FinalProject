@@ -3,6 +3,7 @@ package com.Info6205.TicTacToe.ClientAndServer;
 import com.Info6205.TicTacToe.ArtificialIntelligence.Algorithms;
 import com.Info6205.TicTacToe.TicTacToe.Board;
 import com.Info6205.TicTacToe.UserInterface.GameInterface;
+import com.Info6205.TicTacToe.UserInterface.MainInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +49,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
 
     /**
      * Construct the Window.
-     *  @param playMode the game mode (Player vs. Player or Player vs. AI)
+     * @param playMode the game mode (Player vs. Player or Player vs. AI)
      * @param host
      */
     public TicTacToeClient(String playMode, String host) {
@@ -56,33 +57,31 @@ public class TicTacToeClient extends JPanel implements Runnable{
         board = new Board();
         loadCells();
         panel = createPanel();
-        displayArea4pvp(panel);
+        add(panel, BorderLayout.CENTER);
         if(playMode.equals("pvp")) {
             // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
-            displayArea4pvp(panel);
+            displayArea4pvp();
             startClient();
         } else {
             this.mode = Mode.PvE;
         }
         // set name of server
         this.ticTacToeHost = host;
-        // Set up the gameInterface
     }
+
+
 
     /**
      * Create a new display for pvp mode
      */
-    private void displayArea4pvp(JPanel panel) {
-        // 下面显示内容
+    private void displayArea4pvp() {
+        // set up displayArea
         displayArea = new JTextArea(4, 20); // set up JTextArea
         displayArea.setEditable(false);
-        add(new JScrollPane(displayArea), BorderLayout.PAGE_END);
-
-        JPanel panel2 = new JPanel(); // set up panel to contain boardPanel
-        panel2.add(panel, BorderLayout.CENTER); // add board panel
-        add(panel, BorderLayout.CENTER); // add container panel
-        idField = new JTextField(); // set up textfield
+        add(new JScrollPane(displayArea), BorderLayout.SOUTH);
+        // set up textfield
+        idField = new JTextField();
         idField.setEditable(false);
         add(idField, BorderLayout.NORTH);
     }
@@ -114,11 +113,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
      */
     @Override
     public void run() {
-        myMark = input.nextLine(); // get player's mark (X or O)
-        SwingUtilities.invokeLater(() -> {
-            // display player's mark
-            idField.setText("You are player \"" + myMark + "\"");
-        });
+        // get player's mark (X or O)
+        myMark = input.nextLine();
+        idField.setText("You are player \"" + myMark + "\"");
+        this.repaint();
 
         myTurn = (myMark.equals(X_MARK)); // determine if client's turn
 
@@ -185,16 +183,6 @@ public class TicTacToeClient extends JPanel implements Runnable{
         cells[8] = new Point(489, 489);
     }
 
-    /**
-     * Set the size, title, visibility etc...
-     */
-    private void setWindowProperties() {
-//        setResizable(false);
-//        pack();
-//        setTitle("Ava's Tic Tac Toe");
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-    }
 
     /**
      * Create the panel that will be used for drawing Tic Tac Toe to the screen.
@@ -202,12 +190,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
      * @return the panel with the specified dimensions and mouse listener
      */
     private JPanel createPanel() {
-        JPanel gameInterface = new GameInterface();
-//        Container cp = getContentPane();
-//        cp.add(gameInterface);
+        GameInterface gameInterface = new GameInterface();
         gameInterface.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         gameInterface.addMouseListener(new MyMouseAdapter());
-        board = ((GameInterface) gameInterface).getBoard();
+        board = gameInterface.getBoard();
         return gameInterface;
     }
 
