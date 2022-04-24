@@ -20,7 +20,6 @@ public class GameInterface extends JPanel {
 
     public GameInterface() {
         board = new Board();
-        System.out.println(board.toString());
         boardArray = board.toArray();
         loadImages();
     }
