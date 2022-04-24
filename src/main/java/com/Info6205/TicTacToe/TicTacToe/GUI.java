@@ -14,6 +14,9 @@ public class GUI extends JFrame{
     private JLabel TicTacToe;
     private JButton EXIT;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GUI.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     public GUI(String title){
         super(title);
 
