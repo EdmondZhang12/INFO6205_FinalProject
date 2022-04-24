@@ -1,5 +1,8 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +43,5 @@ public class GUI extends JFrame{
     public static void main(String[] args){
         JFrame frame = new GUI("TicTacToe");
         frame.setVisible(true);
-
     }
 }
