@@ -12,7 +12,7 @@ public class Board {
     private State playersTurn;
     private State winner;
     private HashSet<Integer> movesAvailable;
-    private int moveCount;
+    public int moveCount;
     private boolean gameOver;
     /**
      * Construct the Tic Tac Toe board.
