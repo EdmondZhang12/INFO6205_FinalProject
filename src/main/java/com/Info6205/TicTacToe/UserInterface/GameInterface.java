@@ -11,9 +11,6 @@ import java.io.IOException;
 
 
 public class GameInterface extends JPanel {
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
-
     private BufferedImage imageBackground, imageX, imageO;
     private Board board;
     private Board.State[][] boardArray;
@@ -23,13 +20,6 @@ public class GameInterface extends JPanel {
         boardArray = board.toArray();
         loadImages();
     }
-
-//    private JPanel createPanel() {
-//        JPanel gameInterface = new GameInterface();
-//        gameInterface.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//        gameInterface.addMouseListener(new MyMouseAdapter());
-//        return gameInterface;
-//    }
 
     @Override
     public void paintComponent(Graphics g) {

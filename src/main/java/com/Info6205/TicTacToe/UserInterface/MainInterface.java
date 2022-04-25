@@ -28,7 +28,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addCarePanel() {
         cardPane.setLayout(card);
         cardPane.add(mainPanel, "main");
-        cardPane.add(new TicTacToeClient("pve" ,"11"), "MenacePlay");
+        cardPane.add(new TicTacToeClient("pve" ,"11", this), "MenacePlay");
     }
 
     /**
@@ -70,12 +70,15 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.addActionListener(e -> {
-            cardPane.add(new TicTacToeClient("pvp" ,"11"), "OnlinePlay");
+            cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
             card.show(cardPane,"OnlinePlay");
         });
         mainPanel.add(onlineButton);
     }
 
+    public void returnMainPanel () {
+        card.show(cardPane,"main");
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
 

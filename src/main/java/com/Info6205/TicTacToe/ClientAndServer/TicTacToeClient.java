@@ -46,18 +46,20 @@ public class TicTacToeClient extends JPanel implements Runnable{
      * Used for identifying which cell the player has clicked on.
      */
     private Point[] cells;
-
+    private MainInterface frame;
     /**
      * Construct the Window.
      * @param playMode the game mode (Player vs. Player or Player vs. AI)
      * @param host
+     * @param mainInterface
      */
-    public TicTacToeClient(String playMode, String host) {
+    public TicTacToeClient(String playMode, String host, MainInterface mainInterface) {
+        loadCells();
         myTurn = true;
         board = new Board();
-        loadCells();
         panel = createPanel();
         add(panel, BorderLayout.CENTER);
+        addReturnBtn();
         if(playMode.equals("pvp")) {
             // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
@@ -68,9 +70,28 @@ public class TicTacToeClient extends JPanel implements Runnable{
         }
         // set name of server
         this.ticTacToeHost = host;
+        this.frame = mainInterface;
     }
 
-
+    /**
+     * Create a new Btn for return
+     */
+    private void addReturnBtn() {
+        JButton returnBtn = new JButton("Back <");
+        returnBtn.addActionListener(e -> {
+            if(!board.isGameOver() ) {
+                JOptionPane pane = new JOptionPane();
+                int dialogResult = JOptionPane.showConfirmDialog(pane,  "Are you sure? You will lose this one ","Back to Menu.", JOptionPane.YES_NO_OPTION);
+                if(dialogResult == JOptionPane.YES_OPTION)
+                    frame.returnMainPanel();
+            } else {
+                frame.returnMainPanel();
+            }
+        });
+        if(mode == Mode.PvE) {
+            this.add(returnBtn,BorderLayout.CENTER);
+        }
+    }
 
     /**
      * Create a new display for pvp mode
@@ -279,5 +300,22 @@ public class TicTacToeClient extends JPanel implements Runnable{
             return Math.sqrt(xDiffSquared + yDiffSquared);
         }
     }
+
+//    private void isPlayAgain() {
+//        if (board.isGameOver()) {
+//            String message;
+//            if (board.getWinner() == Board.State.Blank) {
+//                message = "Draw";
+//            } else {
+//                message = board.getWinner() + " Wins.";
+//            }
+//            JOptionPane pane = new JOptionPane();
+//            int dialogResult = JOptionPane.showConfirmDialog(pane, message + " Play again?","Game over.", JOptionPane.YES_NO_OPTION);
+//            if(dialogResult == JOptionPane.YES_OPTION)
+//                board.reset();
+//            else
+//                System.exit(0);
+//        }
+//    }
 
 }
