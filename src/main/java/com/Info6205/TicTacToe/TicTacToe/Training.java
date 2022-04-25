@@ -10,6 +10,7 @@ public class Training {
     private Hashtable<List<Integer>,Hashtable> menaces;
     private final double lr = 0.2;
     private final double decay_gamma = 0.9;
+    private final double exp_rate = 0.3;
 //    private Stack steps;
 
     public Training () {
@@ -35,9 +36,10 @@ public class Training {
         return StateList;
     }
 
-    public Hashtable OneTraining(Board board){
+    public void randomAction(Board board){
         Hashtable steps =  new Hashtable<>();
         while(!board.isGameOver()){
+
 //            get current state of chess
             Integer initialState[]={0,0,0,0,0,0,0,0,0};
             List<Integer> s1 = new ArrayList(Arrays.asList(initialState));
@@ -46,10 +48,47 @@ public class Training {
             List<Integer> currentState = getChessState(board,s1);
             Random.run(board);
             List<Integer> nextState = getChessState(board,s2);
+//            System.out.println("next State:" + nextState + "Current state:" + currentState);
             steps.put(currentState,nextState);
         }
-        System.out.println("steps result:" + steps);
-        return steps;
+//        System.out.println("steps result:" + steps);
+        double reward = giveReward(board);
+        updateStatus(steps,reward);
+    }
+
+    public void greedyAction(Board board){
+        Hashtable steps =  new Hashtable<>();
+        Integer[] initialState = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        List<Integer> current = new ArrayList(Arrays.asList(initialState));
+        while(!board.isGameOver()) {
+            if (menaces.containsKey(current)) {
+                double maxValue = 0;
+                List<Integer> next = new ArrayList<>();
+                Hashtable nextSteps = menaces.get(current);
+                Enumeration<List<Integer>> e = nextSteps.keys();
+                while (e.hasMoreElements()) {
+                    List<Integer> key = e.nextElement();
+                    double value = (double) nextSteps.get(key);
+                    if (value > maxValue) {
+                        next = key;
+                        maxValue = value;
+                    }
+                }
+                int nextIndex = -1;
+                for (int i = 0; i < next.size(); i++) {
+                    if (Objects.equals(current.get(i), next.get(i)))
+                        continue;
+                    else
+                        nextIndex = i;
+                }
+                board.move(nextIndex);
+                steps.put(current,next);
+                current = next;
+            }
+        }
+//        System.out.println("steps result:" + steps);
+        double reward = giveReward(board);
+        updateStatus(steps,reward);
     }
 
     public void updateStatus(Hashtable steps,double reward){
@@ -77,7 +116,7 @@ public class Training {
         }
     }
 
-    /*
+    /**
     X is the training model, 1 is rewarded if it wins, 0 is rewarded if it loses, 0.1 is rewarded if there's a draw
      */
     public double giveReward(Board board){
@@ -91,19 +130,51 @@ public class Training {
         return reward;
     }
 
+    /**
+     * use ϵ-greedy method to balance between exploration and exploitation.
+     * Here we set exp_rate=0.3 , so 70% of the time our agent will take greedy action,
+     * which is choosing action based on current estimation of states-value,
+     * and 30% of the time our agent will take random action.
+     */
+    public void chooseAction(Board board){
+        if (Math.random() <= exp_rate){
+            System.out.println("take random action");
+            randomAction(board);
+        }
+        else {
+            System.out.println("take greedy action");
+            greedyAction(board);
+//            else{
+//                System.out.println("take random action");
+//                Hashtable steps = OneTraining(board);
+//                double reward = giveReward(board);
+//                updateStatus(steps,reward);
+//                steps.clear();
+//            }
+        }
+        System.out.println("winner is: " + board.getWinner());
+    }
+
+
 
     public static void main(String []args) {
         System.out.println("Training begins...");
         Training test = new Training();
-        for(int i =0; i < 100 ;i++){
-            Board board = new Board();
-            System.out.println("training:" + i);
-            Hashtable steps = test.OneTraining(board);
-            double reward = test.giveReward(board);
-            test.updateStatus(steps,reward);
-            steps.clear();
+        for(int i =0; i < 10000 ;i++){
+            if(i % 100 == 0){
+                System.out.println("round " + i);
+            }
+            Board trainboard = new Board();
+            test.randomAction(trainboard);
         }
-        System.out.println("Done!");
+        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
+        for(int i = 0;i < 10000; i++){
+            Board board = new Board();
+            test.chooseAction(board);
+        }
+//        System.out.println("menaces: " + test.menaces);
+
+//        System.out.println(test.menaces);
 //        Integer firststep[]={0,0,0,0,0,0,0,0,0};
 //        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
 //        System.out.println(test.menaces.get(s1));
