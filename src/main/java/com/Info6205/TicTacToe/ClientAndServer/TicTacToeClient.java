@@ -137,8 +137,15 @@ public class TicTacToeClient extends JPanel implements Runnable{
     @Override
     public void run() {
         // get player's mark (X or O)
-        myMark = input.nextLine();
+        try {
+            myMark = input.nextLine();
+        } catch (Exception e){
+            JOptionPane pane = new JOptionPane();
+            JOptionPane.showMessageDialog( pane, "Have to run the server if wanna play online");
+            frame.returnMainPanel();
+        }
         idField.setText("You are player \"" + myMark + "\"");
+        System.out.println("myMark" + myMark);
         this.repaint();
 
         myTurn = (myMark.equals(X_MARK)); // determine if client's turn

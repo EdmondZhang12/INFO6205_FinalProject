@@ -284,7 +284,7 @@ public class TicTacToeServer extends JFrame {
                     // send message that other player connected
                     output.format("Other player connected. Your move.\n");
                     output.flush(); // flush output
-                } else {
+                } else if (playerNumber == PLAYER_O){
                     output.format("Player O connected, please wait\n");
                     output.flush(); // flush output
                 }
@@ -322,7 +322,7 @@ public class TicTacToeServer extends JFrame {
 
         // set whether or not thread is suspended
         public void setSuspended(boolean status) {
-            suspended = status; // set value of suspended
+            suspended = status;
         }
     }
 
