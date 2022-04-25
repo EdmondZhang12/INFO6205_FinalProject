@@ -59,7 +59,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
         board = new Board();
         panel = createPanel();
         add(panel, BorderLayout.CENTER);
-        addReturnBtn();
+
         if(playMode.equals("pvp")) {
             // if playMode is PvP, run the thread
             this.mode = Mode.PvP;
@@ -68,6 +68,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
         } else {
             this.mode = Mode.PvE;
         }
+        addReturnBtn();
         // set name of server
         this.ticTacToeHost = host;
         this.frame = mainInterface;
@@ -82,9 +83,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
             if(!board.isGameOver() ) {
                 JOptionPane pane = new JOptionPane();
                 int dialogResult = JOptionPane.showConfirmDialog(pane,  "Are you sure? You will lose this one ","Back to Menu.", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == JOptionPane.YES_OPTION)
-                    frame.returnMainPanel();
-            } else {
+                if(dialogResult == JOptionPane.NO_OPTION)
+                    return;
                 frame.returnMainPanel();
             }
         });

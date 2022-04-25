@@ -73,13 +73,13 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.addActionListener(e -> {
-            if(netUtil.isLoclePortUsing(12345)) {
+//            if(! netUtil.isLoclePortUsing(12345)) {
+//                JOptionPane pane = new JOptionPane();
+//                JOptionPane.showMessageDialog( pane, "Please open the server if you wanna play online");
+//            } else {
                 cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
                 card.show(cardPane,"OnlinePlay");
-            } else {
-                JOptionPane pane = new JOptionPane();
-                JOptionPane.showMessageDialog( pane, "Please open the server if you wanna play online");
-            }
+//            }
         });
         mainPanel.add(onlineButton);
     }
