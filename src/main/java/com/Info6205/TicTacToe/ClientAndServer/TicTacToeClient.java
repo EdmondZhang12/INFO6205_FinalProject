@@ -85,8 +85,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
                 int dialogResult = JOptionPane.showConfirmDialog(pane,  "Are you sure? You will lose this one ","Back to Menu.", JOptionPane.YES_NO_OPTION);
                 if(dialogResult == JOptionPane.NO_OPTION)
                     return;
-                frame.returnMainPanel();
             }
+            frame.returnMainPanel();
+            board.reset();
+            panel.repaint();
         });
         if(mode == Mode.PvE) {
             this.add(returnBtn,BorderLayout.CENTER);
