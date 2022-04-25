@@ -1,6 +1,7 @@
 package com.Info6205.TicTacToe.UserInterface;
 
 import com.Info6205.TicTacToe.ClientAndServer.TicTacToeClient;
+import com.Info6205.TicTacToe.Util.NetUtil;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,11 +15,13 @@ public class MainInterface extends JFrame implements ActionListener {
 
     private CardLayout card;
     private JPanel mainPanel, cardPane;
+    private NetUtil netUtil;
 
     public MainInterface() {
         mainPanel = new JPanel();
         cardPane = new JPanel();
         card = new CardLayout();
+        netUtil = new NetUtil();
         addCarePanel();
         setWindowProperties();
         addButton();
@@ -70,8 +73,13 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.addActionListener(e -> {
-            cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
-            card.show(cardPane,"OnlinePlay");
+            if(netUtil.isLoclePortUsing(12345)) {
+                cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
+                card.show(cardPane,"OnlinePlay");
+            } else {
+                JOptionPane pane = new JOptionPane();
+                JOptionPane.showMessageDialog( pane, "Please open the server if you wanna play online");
+            }
         });
         mainPanel.add(onlineButton);
     }

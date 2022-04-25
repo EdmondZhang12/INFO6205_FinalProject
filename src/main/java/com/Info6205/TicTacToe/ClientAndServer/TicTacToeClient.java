@@ -235,8 +235,13 @@ public class TicTacToeClient extends JPanel implements Runnable{
 
             if (board.isGameOver()) {
                 if(mode == Mode.PvP) {
-                    System.exit(1);
-                }
+                    JOptionPane pane = new JOptionPane();
+                    int dialogResult = JOptionPane.showConfirmDialog(pane,"Back to Menu?","Game over.", JOptionPane.YES_NO_OPTION);
+                    if (dialogResult == JOptionPane.YES_OPTION)
+                        frame.returnMainPanel();
+                    else
+                        System.exit(0);
+                    }
                 board.reset();
                 panel.repaint();
             } else if (myTurn) {

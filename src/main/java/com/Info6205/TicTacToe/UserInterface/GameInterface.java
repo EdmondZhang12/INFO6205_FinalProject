@@ -130,7 +130,4 @@ public class GameInterface extends JPanel {
     public Board getBoard() {
         return this.board;
     }
-
-
-
 }
