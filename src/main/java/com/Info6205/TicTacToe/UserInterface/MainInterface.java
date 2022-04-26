@@ -29,6 +29,7 @@ public class MainInterface extends JFrame implements ActionListener {
         cardPane.setLayout(card);
         cardPane.add(mainPanel, "main");
         cardPane.add(new TicTacToeClient("pve" ,"11", this), "MenacePlay");
+        cardPane.add(new OnlineMenaceInterface(this),"Challenge");
     }
 
     /**
@@ -47,6 +48,7 @@ public class MainInterface extends JFrame implements ActionListener {
         addPlayButton();
         addTrainButton();
         addOnlineButton();
+        addAcceptChallengeBtn();
     }
 
     private void addPlayButton() {
@@ -70,15 +72,18 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.addActionListener(e -> {
-//            if(! netUtil.isLoclePortUsing(12345)) {
-//                JOptionPane pane = new JOptionPane();
-//                JOptionPane.showMessageDialog( pane, "Please open the server if you wanna play online");
-//            } else {
-                cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
-                card.show(cardPane,"OnlinePlay");
-//            }
+            cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
+            card.show(cardPane,"OnlinePlay");
         });
         mainPanel.add(onlineButton);
+    }
+
+    private void addAcceptChallengeBtn() {
+        JButton acceptChallenge = new JButton("Challenge");
+        acceptChallenge.addActionListener(e -> {
+            card.show(cardPane,"Challenge");
+        });
+        mainPanel.add(acceptChallenge);
     }
 
     public void returnMainPanel () {
