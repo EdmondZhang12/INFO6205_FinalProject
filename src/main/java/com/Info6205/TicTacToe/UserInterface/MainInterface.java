@@ -47,16 +47,22 @@ public class MainInterface extends JFrame implements ActionListener {
         addPlayButton();
         addTrainButton();
         addOnlineButton();
+        addExitButton();
     }
 
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
+        playButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        playButton.setPreferredSize(new Dimension(400,200));
         playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
         mainPanel.add(playButton);
     }
 
     private void addTrainButton() {
         JButton trainButton = new JButton("Train Menace");
+        trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        trainButton.setPreferredSize(new Dimension(400,200));
+        setVisible(true);
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //TODO: Implement logging and auto training here
@@ -69,6 +75,8 @@ public class MainInterface extends JFrame implements ActionListener {
 
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
+        onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        onlineButton.setPreferredSize(new Dimension(400,200));
         onlineButton.addActionListener(e -> {
 //            if(! netUtil.isLoclePortUsing(12345)) {
 //                JOptionPane pane = new JOptionPane();
@@ -79,6 +87,14 @@ public class MainInterface extends JFrame implements ActionListener {
 //            }
         });
         mainPanel.add(onlineButton);
+    }
+
+    private void addExitButton() {
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        exitButton.setPreferredSize(new Dimension(400,200));
+        exitButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
+        mainPanel.add(exitButton);
     }
 
     public void returnMainPanel () {
