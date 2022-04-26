@@ -1,30 +1,30 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
+import java.net.Inet4Address;
 import java.util.*;
 import com.Info6205.TicTacToe.ArtificialIntelligence.Random;
-import jdk.net.SocketFlow;
 
 
 public class Training {
-    private Hashtable<List<Integer>,List<Integer>> matchboxs;
-    private Hashtable<List<Integer>,Hashtable> menaces;
+    private Hashtable<List<Integer>, List<Integer>> matchboxs;
+    private Hashtable<List<Integer>, Hashtable> menaces;
     private final double lr = 0.2;
     private final double decay_gamma = 0.9;
     private final double exp_rate = 0.3;
 //    private Stack steps;
 
-    public Training () {
+    public Training() {
         matchboxs = new Hashtable<>();
-        menaces = new Hashtable<List<Integer>,Hashtable>();
+        menaces = new Hashtable<List<Integer>, Hashtable>();
 
 //        steps = new Stack();
     }
 
-    private List<Integer> getChessState(Board board,List<Integer> StateList){
-        Hashtable ChessNow= board.getOccupiedMoves();
+    private List<Integer> getChessState(Board board, List<Integer> StateList) {
+        Hashtable ChessNow = board.getOccupiedMoves();
         Iterator<Integer> StateSet = ChessNow.keySet().iterator();
 
-        while(StateSet.hasNext()){
+        while (StateSet.hasNext()) {
             Integer position = StateSet.next();
 //            0 means State.Blank 1 means State.X, 2 means,tate.O
             if (ChessNow.get(position) == Board.State.X) {
@@ -36,31 +36,31 @@ public class Training {
         return StateList;
     }
 
-    public void randomAction(Board board){
-        Hashtable steps =  new Hashtable<>();
-        while(!board.isGameOver()){
+    public void randomAction(Board board) {
+        Hashtable steps = new Hashtable<>();
+        while (!board.isGameOver()) {
 
 //            get current state of chess
-            Integer initialState[]={0,0,0,0,0,0,0,0,0};
+            Integer initialState[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
             List<Integer> s1 = new ArrayList(Arrays.asList(initialState));
             List<Integer> s2 = new ArrayList(Arrays.asList(initialState));
 
-            List<Integer> currentState = getChessState(board,s1);
+            List<Integer> currentState = getChessState(board, s1);
             Random.run(board);
-            List<Integer> nextState = getChessState(board,s2);
+            List<Integer> nextState = getChessState(board, s2);
 //            System.out.println("next State:" + nextState + "Current state:" + currentState);
-            steps.put(currentState,nextState);
+            steps.put(currentState, nextState);
         }
 //        System.out.println("steps result:" + steps);
         double reward = giveReward(board);
-        updateStatus(steps,reward);
+        updateStatus(steps, reward);
     }
 
-    public void greedyAction(Board board){
-        Hashtable steps =  new Hashtable<>();
+    public void greedyAction(Board board) {
+        Hashtable steps = new Hashtable<>();
         Integer[] initialState = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         List<Integer> current = new ArrayList(Arrays.asList(initialState));
-        while(!board.isGameOver()) {
+        while (!board.isGameOver()) {
             if (menaces.containsKey(current)) {
                 double maxValue = 0;
                 List<Integer> next = new ArrayList<>();
@@ -82,48 +82,46 @@ public class Training {
                         nextIndex = i;
                 }
                 board.move(nextIndex);
-                steps.put(current,next);
+                steps.put(current, next);
                 current = next;
             }
         }
 //        System.out.println("steps result:" + steps);
         double reward = giveReward(board);
-        updateStatus(steps,reward);
+        updateStatus(steps, reward);
     }
 
-    public void updateStatus(Hashtable steps,double reward){
+    public void updateStatus(Hashtable steps, double reward) {
         Enumeration<List<Integer>> e = steps.keys();
-        while(e.hasMoreElements()) {
-            List<Integer> key  = e.nextElement();
+        while (e.hasMoreElements()) {
+            List<Integer> key = e.nextElement();
 //            System.out.println("key:" + key + "value: " + steps.get(key));
-            Hashtable<List<Integer>,Double>beads;
-            if(menaces.containsKey(key)){
-                beads =  menaces.get(key);
-                if(beads.containsKey(steps.get(key))){
+            Hashtable<List<Integer>, Double> beads;
+            if (menaces.containsKey(key)) {
+                beads = menaces.get(key);
+                if (beads.containsKey(steps.get(key))) {
 //                    int i =  beads.get(steps.get(key)) + 1;
                     double i = beads.get(steps.get(key));
                     i += lr * (decay_gamma * reward - i);
-                    beads.put((List<Integer>) steps.get(key),i);
-                }
-                else
+                    beads.put((List<Integer>) steps.get(key), i);
+                } else
                     beads.put((List<Integer>) steps.get(key), (double) 0);
-            }
-            else{
+            } else {
                 beads = new Hashtable();
-                beads.put((List<Integer>) steps.get(key),(double) 0);
-                menaces.put(key,beads);
+                beads.put((List<Integer>) steps.get(key), (double) 0);
+                menaces.put(key, beads);
             }
         }
     }
 
     /**
-    X is the training model, 1 is rewarded if it wins, 0 is rewarded if it loses, 0.1 is rewarded if there's a draw
+     * X is the training model, 1 is rewarded if it wins, 0 is rewarded if it loses, 0.1 is rewarded if there's a draw
      */
-    public double giveReward(Board board){
+    public double giveReward(Board board) {
         double reward;
-        if(board.getWinner().equals(Board.State.X))
+        if (board.getWinner().equals(Board.State.X))
             reward = 1;
-        if(board.getWinner().equals(Board.State.O))
+        if (board.getWinner().equals(Board.State.O))
             reward = 0;
         else
             reward = 0.1;
@@ -136,12 +134,11 @@ public class Training {
      * which is choosing action based on current estimation of states-value,
      * and 30% of the time our agent will take random action.
      */
-    public void chooseAction(Board board){
-        if (Math.random() <= exp_rate){
+    public void chooseAction(Board board) {
+        if (Math.random() <= exp_rate) {
             System.out.println("take random action");
             randomAction(board);
-        }
-        else {
+        } else {
             System.out.println("take greedy action");
             greedyAction(board);
 //            else{
@@ -155,6 +152,37 @@ public class Training {
         System.out.println("winner is: " + board.getWinner());
     }
 
+    public int BestMoveFromTraining(Board board, Training option) {
+        int bestMove;
+        Double oldValue = 0.0;
+        List<Integer> currentChoice = new ArrayList<>();
+        List<Integer> bestChoice = currentChoice;
+
+        Integer initialState[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+        List<Integer> s3 = new ArrayList(Arrays.asList(initialState));
+
+        List<Integer> currentState = this.getChessState(board, s3);
+        Hashtable choice = option.menaces.get(currentState);
+        Iterator choices = choice.keySet().iterator();
+
+        while (choices.hasNext()) {
+            currentChoice = (List<Integer>) choices.next();
+            Double newValue = (Double) choice.get(currentChoice);
+            if (oldValue.compareTo(newValue) < 0) {
+                oldValue = newValue;
+                bestChoice = currentChoice;
+            }
+        }
+//        System.out.println(choice);
+//        System.out.println(bestChoice);
+        for (bestMove = 0; bestMove < 9; bestMove++) {
+            if (bestChoice.get(bestMove) != currentState.get(bestMove)) {
+               break;
+            }
+        }
+        System.out.println(bestMove);
+        return bestMove;
+    }
 
 
     public static void main(String []args) {
@@ -172,11 +200,20 @@ public class Training {
             Board board = new Board();
             test.chooseAction(board);
         }
-//        System.out.println("menaces: " + test.menaces);
+        System.out.println("menaces: " + test.menaces);
 
-//        System.out.println(test.menaces);
-//        Integer firststep[]={0,0,0,0,0,0,0,0,0};
-//        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
-//        System.out.println(test.menaces.get(s1));
+        System.out.println(test.menaces);
+        Integer firststep[]={0,0,0,0,0,0,0,0,0};
+        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
+        System.out.println(test.menaces.get(s1));
+
+
+        Board board = new Board();
+        board.move(3);
+        board.move(4);
+        board.move(2);
+        System.out.println(board.getOccupiedMoves());
+        test.BestMoveFromTraining(board,test);
+
     }
 }
