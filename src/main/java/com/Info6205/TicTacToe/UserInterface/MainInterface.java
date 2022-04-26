@@ -10,7 +10,7 @@ import javax.swing.*;
 public class MainInterface extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
-    private static final int HEIGHT = 800;
+    private static final int HEIGHT = 770;
 
     private CardLayout card;
     private JPanel mainPanel, cardPane;
