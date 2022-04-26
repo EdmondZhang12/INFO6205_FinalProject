@@ -152,6 +152,12 @@ public class Training {
         System.out.println("winner is: " + board.getWinner());
     }
 
+    /**
+     * Execute the algorithm.
+     * @param board        current board
+     * @param option       training result,the matchboxes after we trained.
+     * return the index(int) of best move
+     */
     public int BestMoveFromTraining(Board board, Training option) {
         int bestMove;
         Double oldValue = 0.0;
@@ -173,8 +179,6 @@ public class Training {
                 bestChoice = currentChoice;
             }
         }
-//        System.out.println(choice);
-//        System.out.println(bestChoice);
         for (bestMove = 0; bestMove < 9; bestMove++) {
             if (bestChoice.get(bestMove) != currentState.get(bestMove)) {
                break;
@@ -207,7 +211,7 @@ public class Training {
         List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
         System.out.println(test.menaces.get(s1));
 
-
+//      sample for test BestMoveFromTraining() method
         Board board = new Board();
         board.move(3);
         board.move(4);
