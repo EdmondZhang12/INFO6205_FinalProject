@@ -315,21 +315,5 @@ public class TicTacToeClient extends JPanel implements Runnable{
         }
     }
 
-//    private void isPlayAgain() {
-//        if (board.isGameOver()) {
-//            String message;
-//            if (board.getWinner() == Board.State.Blank) {
-//                message = "Draw";
-//            } else {
-//                message = board.getWinner() + " Wins.";
-//            }
-//            JOptionPane pane = new JOptionPane();
-//            int dialogResult = JOptionPane.showConfirmDialog(pane, message + " Play again?","Game over.", JOptionPane.YES_NO_OPTION);
-//            if(dialogResult == JOptionPane.YES_OPTION)
-//                board.reset();
-//            else
-//                System.exit(0);
-//        }
-//    }
 
 }
