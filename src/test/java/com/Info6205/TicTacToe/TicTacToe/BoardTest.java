@@ -24,10 +24,16 @@ class BoardTest {
 
     @Test
     void isGameOver() {
+        board = new Board();
+        board.isGameOver();
     }
 
     @Test
     void toArray() {
+        board = new Board();
+        board.toArray();
+        assertEquals(0,board.moveCount);
+
     }
 
     @Test
@@ -49,4 +55,5 @@ class BoardTest {
     @Test
     void testToString() {
     }
+
 }
