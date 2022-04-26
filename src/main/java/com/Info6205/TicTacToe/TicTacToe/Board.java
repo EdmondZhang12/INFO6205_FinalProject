@@ -23,7 +23,7 @@ public class Board {
     /**
      * Construct the Tic Tac Toe board.
      */
-    Board() {
+    public Board() {
         board = new State[BOARD_WIDTH][BOARD_WIDTH];
         movesAvailable = new HashSet<>();
         movesOccupied = new Hashtable();
