@@ -14,11 +14,4 @@ class GameTest {
         boolean result = game.boardFilledUp();
         assertTrue(result == false);
     }
-
-    @Test
-    void isGameOver() {
-        board = new Board();
-        board.isGameOver();
-        assertEquals(false,board.isGameOver());
-    }
 }
