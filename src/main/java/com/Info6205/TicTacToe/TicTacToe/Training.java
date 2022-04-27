@@ -295,7 +295,6 @@ public class Training {
             Iterator i= randomchoose.iterator();
             while(i.hasNext())
                 return (int) i.next();
-
         }
         Iterator choices = choice.keySet().iterator();
         while (choices.hasNext()) {
@@ -346,18 +345,6 @@ public class Training {
     public static void main(String []args) {
         System.out.println("Training begins...");
         Training test = new Training();
-////      test nullpointerOperation
-//        Board board6 = new Board();
-//        board6.move(5);
-//        board6.move(2);
-//        board6.move(1);
-//        Integer initialState[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-//        List<Integer> s3 = new ArrayList(Arrays.asList(initialState));
-//
-//        List<Integer> currentState = test.getChessState(board6, s3);
-//        Hashtable choice = test.menaces.get(currentState);
-//        System.out.println(choice == null);
-//        test.BestMoveFromTraining(board6,test);
 
         for(int i =0; i < 10000 ;i++){
             if(i % 100 == 0){
@@ -372,45 +359,10 @@ public class Training {
             test.chooseAction(board);
         }
         System.out.println("menaces: " + test.menaces);
-
         System.out.println(test.menaces);
         Integer firststep[]={0,0,0,0,0,0,0,0,0};
         List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
         System.out.println(test.menaces.get(s1));
-
-//      sample for test checkRow() method in checkWin()
-        Board board1 = new Board();
-        board1.move(5);
-        board1.move(2);
-        board1.move(1);
-        System.out.println(board1.getOccupiedMoves());
-        int res = test.BestMoveFromTraining(board1,test);
-        System.out.println("res for checkRow: "+  res);
-
-//        sample for test checkColumn() method in checkWin()
-        Board board2 = new Board();
-        board2.move(1);
-        board2.move(2);
-        board2.move(7);
-        System.out.println(board2.getOccupiedMoves());
-        System.out.println("res for checkColumn : "+  test.BestMoveFromTraining(board2,test));
-
-//      sample for test checkDiagonalFromTopLeft() method in checkWin()
-        Board board3= new Board();
-        board3.move(0);
-        board3.move(2);
-        board3.move(4);
-        System.out.println(board3.getOccupiedMoves());
-        System.out.println("res for checkDiagonalFromTopLeft : "+  test.BestMoveFromTraining(board3,test));
-
-//      sample for test checkDiagonalFromTopRight() method in checkWin()
-        Board board4= new Board();
-        board4.move(6);
-        board4.move(3);
-        board4.move(2);
-        System.out.println(board4.getOccupiedMoves());
-        System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
-        Board board5= new Board();
 
     }
 
