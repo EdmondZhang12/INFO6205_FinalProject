@@ -44,16 +44,61 @@ public class MainInterface extends JFrame implements ActionListener {
     }
 
     private void addButton() {
+        addLabel1();
         addPlayButton();
+        addLabel2();
         addTrainButton();
+        addLabel3();
         addOnlineButton();
+        addLabel4();
         addExitButton();
     }
 
+    private void addLabel1() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+    }
+
+    private void addLabel2() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+    }
+
+    private void addLabel3() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+    }
+
+    private void addLabel4() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+    }
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
         playButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        playButton.setPreferredSize(new Dimension(400,170));
+        playButton.setPreferredSize(new Dimension(400,100));
         playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
         mainPanel.add(playButton);
     }
@@ -61,7 +106,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addTrainButton() {
         JButton trainButton = new JButton("Train Menace");
         trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        trainButton.setPreferredSize(new Dimension(400,170));
+        trainButton.setPreferredSize(new Dimension(400,100));
         setVisible(true);
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -76,7 +121,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        onlineButton.setPreferredSize(new Dimension(400,170));
+        onlineButton.setPreferredSize(new Dimension(400,100));
         onlineButton.addActionListener(e -> {
 //            if(! netUtil.isLoclePortUsing(12345)) {
 //                JOptionPane pane = new JOptionPane();
@@ -92,7 +137,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addExitButton() {
         JButton exitButton = new JButton("Exit");
         exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        exitButton.setPreferredSize(new Dimension(400,170));
+        exitButton.setPreferredSize(new Dimension(400,100));
         exitButton.addActionListener(e -> System.exit(0));
         mainPanel.add(exitButton);
     }
