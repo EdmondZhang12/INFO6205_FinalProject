@@ -10,12 +10,10 @@ public class Training {
     private final double lr = 0.2;
     private final double decay_gamma = 0.9;
     private final double exp_rate = 0.3;
-//    private Stack steps;
 
     public Training() {
         matchboxs = new Hashtable<>();
         menaces = new Hashtable<List<Integer>, Hashtable>();
-//        steps = new Stack();
     }
 
     private List<Integer> getChessState(Board board, List<Integer> StateList) {
@@ -34,7 +32,7 @@ public class Training {
         return StateList;
     }
 
-    public void randomAction(Board board) {
+    public Hashtable randomAction(Board board) {
         Hashtable steps = new Hashtable<>();
         while (!board.isGameOver()) {
 
@@ -52,9 +50,10 @@ public class Training {
 //        System.out.println("steps result:" + steps);
         double reward = giveReward(board);
         updateStatus(steps, reward);
+        return steps;
     }
 
-    public void greedyAction(Board board) {
+    public Hashtable greedyAction(Board board) {
         Hashtable steps = new Hashtable<>();
         Integer[] initialState = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         List<Integer> current = new ArrayList(Arrays.asList(initialState));
@@ -84,9 +83,10 @@ public class Training {
                 current = next;
             }
         }
-//        System.out.println("steps result:" + steps);
+        System.out.println("steps result:" + steps);
         double reward = giveReward(board);
         updateStatus(steps, reward);
+        return steps;
     }
 
     public void updateStatus(Hashtable steps, double reward) {
@@ -107,8 +107,9 @@ public class Training {
             } else {
                 beads = new Hashtable();
                 beads.put((List<Integer>) steps.get(key), (double) 0);
-                menaces.put(key, beads);
+//                menaces.put(key, beads);
             }
+            menaces.put(key, beads);
         }
     }
 
@@ -148,6 +149,16 @@ public class Training {
 //            }
         }
         System.out.println("winner is: " + board.getWinner());
+    }
+    public void preTraining(){
+        for(int i =0; i < 100000 ;i++){
+            if(i % 100 == 0){
+                System.out.println("round " + i);
+            }
+            Board trainboard = new Board();
+            randomAction(trainboard);
+        }
+        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
     }
     /**
      * Execute the algorithm.
@@ -325,59 +336,65 @@ public class Training {
 
 
     public static void main(String []args) {
-        System.out.println("Training begins...");
         Training test = new Training();
-        for(int i =0; i < 10000 ;i++){
-            if(i % 100 == 0){
-                System.out.println("round " + i);
-            }
-            Board trainboard = new Board();
-            test.randomAction(trainboard);
-        }
-        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
-        for(int i = 0;i < 100; i++){
-            Board board = new Board();
-            test.chooseAction(board);
-        }
-        System.out.println("menaces: " + test.menaces);
+        test.preTraining();
+        System.out.println(test.getMenaces());
+        test.greedyAction(new Board());
+        System.out.println(test.getMenaces());
 
-        System.out.println(test.menaces);
-        Integer firststep[]={0,0,0,0,0,0,0,0,0};
-        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
-        System.out.println(test.menaces.get(s1));
-
-//      sample for test checkRow() method in checkWin()
-        Board board1 = new Board();
-        board1.move(5);
-        board1.move(2);
-        board1.move(1);
-        System.out.println(board1.getOccupiedMoves());
-        int res = test.BestMoveFromTraining(board1,test);
-        System.out.println("res for checkRow: "+  res);
-
-//        sample for test checkColumn() method in checkWin()
-        Board board2 = new Board();
-        board2.move(1);
-        board2.move(2);
-        board2.move(7);
-        System.out.println(board2.getOccupiedMoves());
-        System.out.println("res for checkColumn : "+  test.BestMoveFromTraining(board2,test));
-
-//      sample for test checkDiagonalFromTopLeft() method in checkWin()
-        Board board3= new Board();
-        board3.move(0);
-        board3.move(2);
-        board3.move(4);
-        System.out.println(board3.getOccupiedMoves());
-        System.out.println("res for checkDiagonalFromTopLeft : "+  test.BestMoveFromTraining(board3,test));
-
-//      sample for test checkDiagonalFromTopRight() method in checkWin()
-        Board board4= new Board();
-        board4.move(6);
-        board4.move(3);
-        board4.move(2);
-        System.out.println(board4.getOccupiedMoves());
-        System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
+//        System.out.println("Training begins...");
+//        Training test = new Training();
+//        for(int i =0; i < 10000 ;i++){
+//            if(i % 100 == 0){
+//                System.out.println("round " + i);
+//            }
+//            Board trainboard = new Board();
+//            test.randomAction(trainboard);
+//        }
+//        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
+//        for(int i = 0;i < 100; i++){
+//            Board board = new Board();
+//            test.chooseAction(board);
+//        }
+//        System.out.println("menaces: " + test.menaces);
+//
+//        System.out.println(test.menaces);
+//        Integer firststep[]={0,0,0,0,0,0,0,0,0};
+//        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
+//        System.out.println(test.menaces.get(s1));
+//
+////      sample for test checkRow() method in checkWin()
+//        Board board1 = new Board();
+//        board1.move(5);
+//        board1.move(2);
+//        board1.move(1);
+//        System.out.println(board1.getOccupiedMoves());
+//        int res = test.BestMoveFromTraining(board1,test);
+//        System.out.println("res for checkRow: "+  res);
+//
+////        sample for test checkColumn() method in checkWin()
+//        Board board2 = new Board();
+//        board2.move(1);
+//        board2.move(2);
+//        board2.move(7);
+//        System.out.println(board2.getOccupiedMoves());
+//        System.out.println("res for checkColumn : "+  test.BestMoveFromTraining(board2,test));
+//
+////      sample for test checkDiagonalFromTopLeft() method in checkWin()
+//        Board board3= new Board();
+//        board3.move(0);
+//        board3.move(2);
+//        board3.move(4);
+//        System.out.println(board3.getOccupiedMoves());
+//        System.out.println("res for checkDiagonalFromTopLeft : "+  test.BestMoveFromTraining(board3,test));
+//
+////      sample for test checkDiagonalFromTopRight() method in checkWin()
+//        Board board4= new Board();
+//        board4.move(6);
+//        board4.move(3);
+//        board4.move(2);
+//        System.out.println(board4.getOccupiedMoves());
+//        System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
 
     }
 

@@ -284,6 +284,10 @@ public class Board {
         return new String(sb);
     }
 
+    public int getMoveCount() {
+        return moveCount;
+    }
+
     public enum State {Blank, X, O}
 
 }
