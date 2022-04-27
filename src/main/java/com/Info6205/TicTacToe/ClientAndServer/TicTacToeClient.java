@@ -57,7 +57,6 @@ public class TicTacToeClient extends JPanel implements Runnable{
      */
     public TicTacToeClient(String playMode, String host, MainInterface mainInterface, Training training) {
         loadCells();
-        myTurn = true;
         board = new Board();
         panel = createPanel();
         add(panel, BorderLayout.CENTER);
@@ -69,6 +68,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
             startClient();
         } else {
             this.mode = Mode.PvE;
+            //todo
+//            int nextStep = training.BestMoveFromTraining(board,training);
+//            boolean validMove = board.move(nextStep);
+            myTurn = true;
         }
         addReturnBtn();
         // set name of server
@@ -244,7 +247,6 @@ public class TicTacToeClient extends JPanel implements Runnable{
         @Override
         public void mousePressed(MouseEvent e) {
             super.mouseClicked(e);
-
             if (board.isGameOver()) {
                 if(mode == Mode.PvP) {
                     JOptionPane pane = new JOptionPane();
@@ -255,6 +257,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
                         System.exit(0);
                     }
                 board.reset();
+//                int nextStep = training.BestMoveFromTraining(board,training);
+//                boolean validMove = board.move(nextStep);
                 panel.repaint();
             } else if (myTurn) {
                 playerMove(e);
@@ -272,14 +276,17 @@ public class TicTacToeClient extends JPanel implements Runnable{
             if (!board.isGameOver() && move != -1) {
                 boolean validMove = board.move(move);
                 if (validMove) {
-                    if(mode == Mode.PvE) {
+                    if(mode == Mode.PvE && !board.isGameOver()) {
                         //Algorithms.miniMax(board);
                         int nextStep = training.BestMoveFromTraining(board,training);
-                        board.move(nextStep);
+                        validMove = board.move(nextStep);
+                        if(!validMove) {
+                            System.out.println("-------unvalid------");
+                        }
                     } else if(mode == Mode.PvP) {
                         output.format("%d\n", move);
                         output.flush();
-                        myTurn = false; // not my turn any more
+                        myTurn = false;
                     }
                 }
                 panel.repaint();
