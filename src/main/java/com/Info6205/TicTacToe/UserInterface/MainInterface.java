@@ -41,6 +41,7 @@ public class MainInterface extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setSize(WIDTH,HEIGHT);
+        setBackground(Color.white);
     }
 
     private void addButton() {
@@ -58,9 +59,19 @@ public class MainInterface extends JFrame implements ActionListener {
         JLabel label1 = new JLabel("                                                                                                     ");
         JLabel label2 = new JLabel("                                                                                                     ");
         JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     TicTacToe                                                                                                     ");
+        Font font = new Font(" ", Font.PLAIN, 30);
+        label4.setFont(font);
+        JLabel label5 = new JLabel("                                                                                                     ");
+        JLabel label6 = new JLabel("                                                                                                     ");
+        JLabel label7 = new JLabel("                                                                                                     ");
         mainPanel.add(label1);
         mainPanel.add(label2);
         mainPanel.add(label3);
+        mainPanel.add(label4);
+        mainPanel.add(label5);
+        mainPanel.add(label6);
+        mainPanel.add(label7);
     }
 
     private void addLabel2() {
@@ -99,6 +110,8 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton playButton = new JButton("Play With Menace");
         playButton.setBorder(BorderFactory.createRaisedBevelBorder());
         playButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        playButton.setFont(font);
         playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
         mainPanel.add(playButton);
     }
@@ -107,6 +120,8 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton trainButton = new JButton("Train Menace");
         trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
         trainButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        trainButton.setFont(font);
         setVisible(true);
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -122,6 +137,8 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
         onlineButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        onlineButton.setFont(font);
         onlineButton.addActionListener(e -> {
 //            if(! netUtil.isLoclePortUsing(12345)) {
 //                JOptionPane pane = new JOptionPane();
@@ -138,6 +155,8 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton exitButton = new JButton("Exit");
         exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
         exitButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        exitButton.setFont(font);
         exitButton.addActionListener(e -> System.exit(0));
         mainPanel.add(exitButton);
     }
