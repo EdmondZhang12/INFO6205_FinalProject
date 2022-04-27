@@ -162,7 +162,7 @@ public class Training {
         int bw = board.BOARD_WIDTH;
         int checkPlayerOccupiedMove ;
         int checkPlayerWinMove ;
-        int NeedMove;
+        int NeedMove = 10;
 
 //      checkRow
         for(int j = 0; j< bw;j++){
@@ -174,7 +174,6 @@ public class Training {
                     break;
                 }
                 else if(board.toArray()[j][i] == Board.State.Blank){
-
                     checkPlayerWinMove++;
                     NeedMove = j * bw + i;
                 }
@@ -197,7 +196,7 @@ public class Training {
                 }
                 else if(board.toArray()[i][j] == Board.State.Blank){
                     checkPlayerWinMove++;
-                    NeedMove = j * bw + i;
+                    NeedMove = i * bw + j;
                 }
                 else{
                     checkPlayerOccupiedMove++;
@@ -212,11 +211,13 @@ public class Training {
         checkPlayerOccupiedMove = 0;
         checkPlayerWinMove = 0;
         NeedMove = 10;
+
+        checkDiagonalFromTopLeftOK:
         for(int j = 0; j< bw;j++) {
             for (int i = 0; i < bw; i++) {
                 if (i == j) {
                         if (board.toArray()[i][i] == player) {
-                            break;
+                            break checkDiagonalFromTopLeftOK;
                         }
                         else if(board.toArray()[i][i] == Board.State.Blank){
                             checkPlayerWinMove++;
@@ -237,12 +238,12 @@ public class Training {
         checkPlayerOccupiedMove = 0;
         checkPlayerWinMove = 0;
         NeedMove = 10;
-
+        checkDiagonalFromTopRightOK:
         for(int j = 0; j < bw; j++) {
             for (int i = 0; i < bw; i++) {
                 if (i+j==bw-1){
                     if (board.toArray()[j][i] == player) {
-                        break;
+                        break checkDiagonalFromTopRightOK;
                     }
                     else if(board.toArray()[j][i] == Board.State.Blank){
                         checkPlayerWinMove++;
@@ -257,6 +258,7 @@ public class Training {
         if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
             return NeedMove;
         LOGGER.info("checkDiagonalFromTopRight finished");
+        LOGGER.info(board.toString());
         return 10;
     }
 
@@ -276,10 +278,26 @@ public class Training {
         List<Integer> s3 = new ArrayList(Arrays.asList(initialState));
 
         List<Integer> currentState = this.getChessState(board, s3);
+
+        Board.State player = board.getTurn();
+        int DrawMove = this.CheckWin(player,board);
+        LOGGER.info(board.toString());
+
+        if(DrawMove!=10){
+            LOGGER.info("player is about to lose,use human strategy instead of training result");
+            System.out.println(DrawMove);
+            return DrawMove;
+        }
+
         Hashtable choice = option.menaces.get(currentState);
+        if(choice == null){
+            HashSet randomchoose = board.getAvailableMoves();
+            Iterator i= randomchoose.iterator();
+            while(i.hasNext())
+                return (int) i.next();
 
+        }
         Iterator choices = choice.keySet().iterator();
-
         while (choices.hasNext()) {
             currentChoice = (List<Integer>) choices.next();
             Double newValue = (Double) choice.get(currentChoice);
@@ -288,19 +306,11 @@ public class Training {
                 bestChoice = currentChoice;
             }
         }
+        LOGGER.info("bestChoice:" + bestChoice.toString());
         for (bestMove = 0; bestMove < 9; bestMove++) {
             if (bestChoice.get(bestMove) != currentState.get(bestMove)) {
                break;
             }
-        }
-
-        Board.State player = board.getTurn();
-        int DrawMove = this.CheckWin(player,board);
-
-        if(DrawMove!=10){
-            LOGGER.info("plater is about to lose,use human strategy instead of training result");
-            System.out.println(DrawMove);
-            return DrawMove;
         }
         System.out.println(bestMove);
         return bestMove;
@@ -336,6 +346,19 @@ public class Training {
     public static void main(String []args) {
         System.out.println("Training begins...");
         Training test = new Training();
+////      test nullpointerOperation
+//        Board board6 = new Board();
+//        board6.move(5);
+//        board6.move(2);
+//        board6.move(1);
+//        Integer initialState[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+//        List<Integer> s3 = new ArrayList(Arrays.asList(initialState));
+//
+//        List<Integer> currentState = test.getChessState(board6, s3);
+//        Hashtable choice = test.menaces.get(currentState);
+//        System.out.println(choice == null);
+//        test.BestMoveFromTraining(board6,test);
+
         for(int i =0; i < 10000 ;i++){
             if(i % 100 == 0){
                 System.out.println("round " + i);
@@ -387,8 +410,6 @@ public class Training {
         board4.move(2);
         System.out.println(board4.getOccupiedMoves());
         System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
-
-
         Board board5= new Board();
 
     }
@@ -396,7 +417,5 @@ public class Training {
     public Hashtable<List<Integer>, Hashtable> getMenaces() {
         return menaces;
     }
-
-
 
 }
