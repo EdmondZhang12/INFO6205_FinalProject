@@ -2,6 +2,10 @@ package com.Info6205.TicTacToe.TicTacToe;
 
 import java.util.HashSet;
 
+import java.util.Hashtable;
+import java.util.Stack;
+
+
 /**
  * Represents the Tic Tac Toe board.
  */
@@ -12,14 +16,17 @@ public class Board {
     private State playersTurn;
     private State winner;
     private HashSet<Integer> movesAvailable;
+
     private int moveCount;
     private boolean gameOver;
+    private Hashtable<Integer,State> movesOccupied;
     /**
      * Construct the Tic Tac Toe board.
      */
-    Board() {
+    public Board() {
         board = new State[BOARD_WIDTH][BOARD_WIDTH];
         movesAvailable = new HashSet<>();
+        movesOccupied = new Hashtable();
         reset();
     }
 
@@ -36,6 +43,8 @@ public class Board {
 
         movesAvailable.clear();
 
+        movesOccupied.clear();
+
         for (int i = 0; i < BOARD_WIDTH * BOARD_WIDTH; i++) {
             movesAvailable.add(i);
         }
@@ -44,7 +53,8 @@ public class Board {
     /**
      * Restart the game with a new blank board.
      */
-    void reset() {
+
+    public void reset() {
         moveCount = 0;
         gameOver = false;
         playersTurn = State.X;
@@ -84,6 +94,8 @@ public class Board {
         moveCount++;
         movesAvailable.remove(y * BOARD_WIDTH + x);
 
+        movesOccupied.put(y * BOARD_WIDTH + x,playersTurn);
+
         // The game is a draw.
         if (moveCount == BOARD_WIDTH * BOARD_WIDTH) {
             winner = State.Blank;
@@ -114,7 +126,8 @@ public class Board {
      *
      * @return the board array
      */
-    State[][] toArray() {
+
+    public State[][] toArray() {
         return board.clone();
     }
 
@@ -147,6 +160,8 @@ public class Board {
     public HashSet<Integer> getAvailableMoves() {
         return movesAvailable;
     }
+
+    public Hashtable<Integer,State> getOccupiedMoves() {return movesOccupied;}
 
     /**
      * Checks the specified row to see if there is a winner.
@@ -238,6 +253,9 @@ public class Board {
         board.winner = this.winner;
         board.movesAvailable = new HashSet<>();
         board.movesAvailable.addAll(this.movesAvailable);
+
+        board.movesOccupied = new Hashtable<>();
+        board.movesOccupied.putAll(this.movesOccupied);
         board.moveCount = this.moveCount;
         board.gameOver = this.gameOver;
         return board;
@@ -264,6 +282,10 @@ public class Board {
         }
 
         return new String(sb);
+    }
+
+    public int getMoveCount() {
+        return moveCount;
     }
 
     public enum State {Blank, X, O}
