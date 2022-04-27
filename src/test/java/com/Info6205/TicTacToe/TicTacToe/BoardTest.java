@@ -29,14 +29,13 @@ class BoardTest {
         assertEquals(false,board.isGameOver());
     }
 
-
     @Test
-    void getDeepCopy() {
-
-    }
-
-    @Test
-    void testToString() {
+    void ToString() {
+        board = new Board();
+        board.toString();
+        assertEquals("- - - \n" +
+                              "- - - \n" +
+                              "- - - ",board.toString());
     }
 
 }
