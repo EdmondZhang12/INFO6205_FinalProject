@@ -2,6 +2,8 @@ package com.Info6205.TicTacToe.TicTacToe;
 
 import java.util.*;
 import com.Info6205.TicTacToe.ArtificialIntelligence.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Training {
@@ -12,6 +14,7 @@ public class Training {
     private final double exp_rate = 0.3;
 //    private Stack steps;
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(Training.class);
     public Training() {
         matchboxs = new Hashtable<>();
         menaces = new Hashtable<List<Integer>, Hashtable>();
@@ -182,7 +185,7 @@ public class Training {
             if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
                 return NeedMove;
         }
-
+        LOGGER.info("checkRow finished");
 //      checkColumn
         for(int j = 0; j< bw;j++){
             checkPlayerOccupiedMove = 0;
@@ -204,7 +207,7 @@ public class Training {
                 return NeedMove;
         }
 
-
+        LOGGER.info("checkColumn finished");
 //      checkDiagonalFromTopLeft
         checkPlayerOccupiedMove = 0;
         checkPlayerWinMove = 0;
@@ -229,6 +232,7 @@ public class Training {
             return NeedMove;
         }
 
+        LOGGER.info("checkDiagonalFromTopLeft finished");
 //      checkDiagonalFromTopRight
         checkPlayerOccupiedMove = 0;
         checkPlayerWinMove = 0;
@@ -252,6 +256,7 @@ public class Training {
         }
         if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
             return NeedMove;
+        LOGGER.info("checkDiagonalFromTopRight finished");
         return 10;
     }
 
@@ -272,6 +277,7 @@ public class Training {
 
         List<Integer> currentState = this.getChessState(board, s3);
         Hashtable choice = option.menaces.get(currentState);
+
         Iterator choices = choice.keySet().iterator();
 
         while (choices.hasNext()) {
@@ -292,6 +298,7 @@ public class Training {
         int DrawMove = this.CheckWin(player,board);
 
         if(DrawMove!=10){
+            LOGGER.info("plater is about to lose,use human strategy instead of training result");
             System.out.println(DrawMove);
             return DrawMove;
         }
@@ -301,6 +308,7 @@ public class Training {
 
     public Training run() {
         System.out.println("Training begins...");
+        LOGGER.info("Training begins");
         Training test = new Training();
         for(int i =0; i < 10000 ;i++){
             if(i % 100 == 0){
@@ -310,6 +318,7 @@ public class Training {
             test.randomAction(trainboard);
         }
         System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
+        LOGGER.info("Initial training Done! " + "greedy algorithm training begins");
         for(int i = 0;i < 10000; i++){
             Board board = new Board();
             test.chooseAction(board);
@@ -379,9 +388,15 @@ public class Training {
         System.out.println(board4.getOccupiedMoves());
         System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
 
+
+        Board board5= new Board();
+
     }
 
     public Hashtable<List<Integer>, Hashtable> getMenaces() {
         return menaces;
     }
+
+
+
 }
