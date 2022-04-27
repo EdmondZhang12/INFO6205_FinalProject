@@ -56,7 +56,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
      * @param mainInterface
      */
     public TicTacToeClient(String playMode, String host, MainInterface mainInterface, Training training) {
-        loadCells();
+        this.cells = loadCells();
         board = new Board();
         panel = createPanel();
         add(panel, BorderLayout.CENTER);
@@ -69,8 +69,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
         } else {
             this.mode = Mode.PvE;
             //todo
-//            int nextStep = training.BestMoveFromTraining(board,training);
-//            boolean validMove = board.move(nextStep);
+            int nextStep = training.BestMoveFromTraining(board,training);
+            boolean validMove = board.move(nextStep);
             myTurn = true;
         }
         addReturnBtn();
@@ -206,8 +206,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
     /**
      * Load the locations of the center of each of the cells.
      */
-    private void loadCells() {
-        cells = new Point[9];
+    private Point[] loadCells() {
+        Point[] cells = new Point[9];
         cells[0] = new Point(109, 109);
         cells[1] = new Point(299, 109);
         cells[2] = new Point(489, 109);
@@ -217,6 +217,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
         cells[6] = new Point(109, 489);
         cells[7] = new Point(299, 489);
         cells[8] = new Point(489, 489);
+        return cells;
     }
 
 
