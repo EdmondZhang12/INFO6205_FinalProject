@@ -15,12 +15,15 @@ class GameTest {
     void hasWinner() {
         Game game = new Game();
         boolean result = game.hasWinner();
-        assertTrue(result == false);
+        assertTrue(result == true);
     }
 
 
     @Test
     void boardFilledUp() {
+        Game game = new Game();
+        boolean result = game.boardFilledUp();
+        assertTrue(result == true);
     }
 
     @Test
