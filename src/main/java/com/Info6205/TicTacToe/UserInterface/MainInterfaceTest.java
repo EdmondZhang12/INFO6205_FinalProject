@@ -1,6 +1,7 @@
 package com.Info6205.TicTacToe.UserInterface;
 
 import com.Info6205.TicTacToe.ClientAndServer.TicTacToeClient;
+import com.Info6205.TicTacToe.TicTacToe.Game;
 
 import javax.swing.*;
 

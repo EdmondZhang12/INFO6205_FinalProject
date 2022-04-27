@@ -1,6 +1,5 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
-import com.Info6205.Util.PrivateMethodTester;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,8 +17,9 @@ class BoardTest {
 
     @Test
     void move() {
-        PrivateMethodTester pr = new PrivateMethodTester(board);
-
+        board = new Board();
+        boolean result1 = board.move(1);
+        assertTrue(result1 == true);
     }
 
     @Test
@@ -29,25 +29,10 @@ class BoardTest {
         assertEquals(false,board.isGameOver());
     }
 
-    @Test
-    void toArray() {
-    }
-
-    @Test
-    void getTurn() {
-    }
-
-    @Test
-    void getWinner() {
-
-    }
-
-    @Test
-    void getAvailableMoves() {
-    }
 
     @Test
     void getDeepCopy() {
+
     }
 
     @Test
