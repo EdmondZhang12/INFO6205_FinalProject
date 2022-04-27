@@ -149,6 +149,111 @@ public class Training {
         }
         System.out.println("winner is: " + board.getWinner());
     }
+    /**
+     * Execute the algorithm.
+     * @param board        current board
+     * @param player       current player, decide which player to predict
+     * return the index(int) of not lose immediately move
+     */
+    public int CheckWin(Board.State player,Board board){
+        int bw = board.BOARD_WIDTH;
+        int checkPlayerOccupiedMove ;
+        int checkPlayerWinMove ;
+        int NeedMove;
+
+//      checkRow
+        for(int j = 0; j< bw;j++){
+            checkPlayerOccupiedMove = 0;
+            checkPlayerWinMove = 0;
+            NeedMove = 10;
+            for (int i = 0; i < bw; i++) {
+                if (board.toArray()[j][i] == player){
+                    break;
+                }
+                else if(board.toArray()[j][i] == Board.State.Blank){
+
+                    checkPlayerWinMove++;
+                    NeedMove = j * bw + i;
+                }
+                else{
+                    checkPlayerOccupiedMove++;
+                }
+            }
+            if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
+                return NeedMove;
+        }
+
+//      checkColumn
+        for(int j = 0; j< bw;j++){
+            checkPlayerOccupiedMove = 0;
+            checkPlayerWinMove = 0;
+            NeedMove = 10;
+            for (int i = 0; i < bw; i++) {
+                if (board.toArray()[i][j] == player) {
+                    break;
+                }
+                else if(board.toArray()[i][j] == Board.State.Blank){
+                    checkPlayerWinMove++;
+                    NeedMove = j * bw + i;
+                }
+                else{
+                    checkPlayerOccupiedMove++;
+                }
+            }
+            if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
+                return NeedMove;
+        }
+
+
+//      checkDiagonalFromTopLeft
+        checkPlayerOccupiedMove = 0;
+        checkPlayerWinMove = 0;
+        NeedMove = 10;
+        for(int j = 0; j< bw;j++) {
+            for (int i = 0; i < bw; i++) {
+                if (i == j) {
+                        if (board.toArray()[i][i] == player) {
+                            break;
+                        }
+                        else if(board.toArray()[i][i] == Board.State.Blank){
+                            checkPlayerWinMove++;
+                            NeedMove = i * bw + i;
+                        }
+                        else{
+                            checkPlayerOccupiedMove++;
+                        }
+                    }
+            }
+        }
+        if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1){
+            return NeedMove;
+        }
+
+//      checkDiagonalFromTopRight
+        checkPlayerOccupiedMove = 0;
+        checkPlayerWinMove = 0;
+        NeedMove = 10;
+
+        for(int j = 0; j < bw; j++) {
+            for (int i = 0; i < bw; i++) {
+                if (i+j==bw-1){
+                    if (board.toArray()[j][i] == player) {
+                        break;
+                    }
+                    else if(board.toArray()[j][i] == Board.State.Blank){
+                        checkPlayerWinMove++;
+                        NeedMove = j * bw + i;
+                    }
+                    else{
+                        checkPlayerOccupiedMove++;
+                    }
+                }
+            }
+        }
+        if(checkPlayerOccupiedMove==2 && checkPlayerWinMove==1)
+            return NeedMove;
+        return 10;
+    }
 
     /**
      * Execute the algorithm.
@@ -182,6 +287,14 @@ public class Training {
                break;
             }
         }
+
+        Board.State player = board.getTurn();
+        int DrawMove = this.CheckWin(player,board);
+
+        if(DrawMove!=10){
+            System.out.println(DrawMove);
+            return DrawMove;
+        }
         System.out.println(bestMove);
         return bestMove;
     }
@@ -214,7 +327,7 @@ public class Training {
     public static void main(String []args) {
         System.out.println("Training begins...");
         Training test = new Training();
-        for(int i =0; i < 100000 ;i++){
+        for(int i =0; i < 10000 ;i++){
             if(i % 100 == 0){
                 System.out.println("round " + i);
             }
@@ -222,7 +335,7 @@ public class Training {
             test.randomAction(trainboard);
         }
         System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
-        for(int i = 0;i < 100000; i++){
+        for(int i = 0;i < 100; i++){
             Board board = new Board();
             test.chooseAction(board);
         }
@@ -233,20 +346,39 @@ public class Training {
         List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
         System.out.println(test.menaces.get(s1));
 
-//      sample for test BestMoveFromTraining() method
+//      sample for test checkRow() method in checkWin()
         Board board1 = new Board();
-        board1.move(4);
+        board1.move(5);
+        board1.move(2);
         board1.move(1);
-        board1.move(0);
         System.out.println(board1.getOccupiedMoves());
-        test.BestMoveFromTraining(board1,test);
+        int res = test.BestMoveFromTraining(board1,test);
+        System.out.println("res for checkRow: "+  res);
 
+//        sample for test checkColumn() method in checkWin()
         Board board2 = new Board();
-        board2.move(4); //x
+        board2.move(1);
         board2.move(2);
         board2.move(7);
         System.out.println(board2.getOccupiedMoves());
-        test.BestMoveFromTraining(board2,test);
+        System.out.println("res for checkColumn : "+  test.BestMoveFromTraining(board2,test));
+
+//      sample for test checkDiagonalFromTopLeft() method in checkWin()
+        Board board3= new Board();
+        board3.move(0);
+        board3.move(2);
+        board3.move(4);
+        System.out.println(board3.getOccupiedMoves());
+        System.out.println("res for checkDiagonalFromTopLeft : "+  test.BestMoveFromTraining(board3,test));
+
+//      sample for test checkDiagonalFromTopRight() method in checkWin()
+        Board board4= new Board();
+        board4.move(6);
+        board4.move(3);
+        board4.move(2);
+        System.out.println(board4.getOccupiedMoves());
+        System.out.println("res for checkDiagonalFromTopRight : "+  test.BestMoveFromTraining(board4,test));
+
     }
 
     public Hashtable<List<Integer>, Hashtable> getMenaces() {
