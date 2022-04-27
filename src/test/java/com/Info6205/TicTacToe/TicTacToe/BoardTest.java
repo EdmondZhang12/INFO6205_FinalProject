@@ -13,7 +13,6 @@ class BoardTest {
     void reset() {
         board = new Board();
         board.reset();
-        assertEquals(0,board.moveCount);
     }
 
     @Test
@@ -32,7 +31,6 @@ class BoardTest {
     void toArray() {
         board = new Board();
         board.toArray();
-        assertEquals(0,board.moveCount);
 
     }
 
