@@ -2,6 +2,7 @@ package com.Info6205.TicTacToe.ClientAndServer;
 
 import com.Info6205.TicTacToe.ArtificialIntelligence.Algorithms;
 import com.Info6205.TicTacToe.TicTacToe.Board;
+import com.Info6205.TicTacToe.TicTacToe.Training;
 import com.Info6205.TicTacToe.UserInterface.GameInterface;
 import com.Info6205.TicTacToe.UserInterface.MainInterface;
 
@@ -47,13 +48,14 @@ public class TicTacToeClient extends JPanel implements Runnable{
      */
     private Point[] cells;
     private MainInterface frame;
+    private Training training;
     /**
      * Construct the Window.
      * @param playMode the game mode (Player vs. Player or Player vs. AI)
      * @param host
      * @param mainInterface
      */
-    public TicTacToeClient(String playMode, String host, MainInterface mainInterface) {
+    public TicTacToeClient(String playMode, String host, MainInterface mainInterface, Training training) {
         loadCells();
         myTurn = true;
         board = new Board();
@@ -72,6 +74,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
         // set name of server
         this.ticTacToeHost = host;
         this.frame = mainInterface;
+        this.training = training;
     }
 
     /**
@@ -270,7 +273,11 @@ public class TicTacToeClient extends JPanel implements Runnable{
                 boolean validMove = board.move(move);
                 if (validMove) {
                     if(mode == Mode.PvE) {
-                        Algorithms.miniMax(board);
+                        //Algorithms.miniMax(board);
+                        System.out.println(board.toString());
+
+                        int nextStep = training.BestMoveFromTraining(board,training);
+                        System.out.println(nextStep);
                     } else if(mode == Mode.PvP) {
                         output.format("%d\n", move);
                         output.flush();

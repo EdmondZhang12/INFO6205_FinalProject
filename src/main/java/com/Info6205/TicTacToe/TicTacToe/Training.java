@@ -1,6 +1,5 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
-import java.net.Inet4Address;
 import java.util.*;
 import com.Info6205.TicTacToe.ArtificialIntelligence.Random;
 
@@ -16,7 +15,6 @@ public class Training {
     public Training() {
         matchboxs = new Hashtable<>();
         menaces = new Hashtable<List<Integer>, Hashtable>();
-
 //        steps = new Stack();
     }
 
@@ -188,8 +186,7 @@ public class Training {
         return bestMove;
     }
 
-
-    public static void main(String []args) {
+    public Training run() {
         System.out.println("Training begins...");
         Training test = new Training();
         for(int i =0; i < 10000 ;i++){
@@ -210,14 +207,45 @@ public class Training {
         Integer firststep[]={0,0,0,0,0,0,0,0,0};
         List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
         System.out.println(test.menaces.get(s1));
+        return test;
+    }
+
+
+    public static void main(String []args) {
+        System.out.println("Training begins...");
+        Training test = new Training();
+        for(int i =0; i < 100000 ;i++){
+            if(i % 100 == 0){
+                System.out.println("round " + i);
+            }
+            Board trainboard = new Board();
+            test.randomAction(trainboard);
+        }
+        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
+        for(int i = 0;i < 100000; i++){
+            Board board = new Board();
+            test.chooseAction(board);
+        }
+        System.out.println("menaces: " + test.menaces);
+
+        System.out.println(test.menaces);
+        Integer firststep[]={0,0,0,0,0,0,0,0,0};
+        List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
+        System.out.println(test.menaces.get(s1));
 
 //      sample for test BestMoveFromTraining() method
-        Board board = new Board();
-        board.move(3);
-        board.move(4);
-        board.move(2);
-        System.out.println(board.getOccupiedMoves());
-        test.BestMoveFromTraining(board,test);
+        Board board1 = new Board();
+        board1.move(4);
+        board1.move(1);
+        board1.move(0);
+        System.out.println(board1.getOccupiedMoves());
+        test.BestMoveFromTraining(board1,test);
 
+        Board board2 = new Board();
+        board2.move(4); //x
+        board2.move(2);
+        board2.move(7);
+        System.out.println(board2.getOccupiedMoves());
+        test.BestMoveFromTraining(board2,test);
     }
 }

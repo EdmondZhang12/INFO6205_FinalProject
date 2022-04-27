@@ -1,6 +1,7 @@
 package com.Info6205.TicTacToe.UserInterface;
 
 import com.Info6205.TicTacToe.ClientAndServer.TicTacToeClient;
+import com.Info6205.TicTacToe.TicTacToe.Training;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,11 +15,13 @@ public class MainInterface extends JFrame implements ActionListener {
 
     private CardLayout card;
     private JPanel mainPanel, cardPane;
+    private Training training;
 
     public MainInterface() {
         mainPanel = new JPanel();
         cardPane = new JPanel();
         card = new CardLayout();
+        training = new Training();
         addCarePanel();
         setWindowProperties();
         addButton();
@@ -28,7 +31,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addCarePanel() {
         cardPane.setLayout(card);
         cardPane.add(mainPanel, "main");
-        cardPane.add(new TicTacToeClient("pve" ,"11", this), "MenacePlay");
+        cardPane.add(new TicTacToeClient("pve" ,"11", this, training), "MenacePlay");
         cardPane.add(new OnlineMenaceInterface(this),"Challenge");
     }
 
@@ -61,9 +64,9 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton trainButton = new JButton("Train Menace");
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //TODO: Implement logging and auto training here
+                training = training.run();
                 JOptionPane pane = new JOptionPane();
-                JOptionPane.showMessageDialog( pane, "Training is over, Trainning result is ...");
+                JOptionPane.showMessageDialog( pane, "Training is over");
             }
         });
         mainPanel.add(trainButton);
@@ -72,7 +75,7 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.addActionListener(e -> {
-            cardPane.add(new TicTacToeClient("pvp" ,"11", this), "OnlinePlay");
+            cardPane.add(new TicTacToeClient("pvp" ,"11", this, training), "OnlinePlay");
             card.show(cardPane,"OnlinePlay");
         });
         mainPanel.add(onlineButton);

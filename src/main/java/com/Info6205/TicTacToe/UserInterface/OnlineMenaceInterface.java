@@ -12,6 +12,7 @@ public class OnlineMenaceInterface extends JPanel  {
 
     public OnlineMenaceInterface (MainInterface mi) {
         this.frame = mi;
+        setLayout(null);
         addAlgorCombo();
         addReturnBtn();
         addStartBtn();
@@ -22,6 +23,7 @@ public class OnlineMenaceInterface extends JPanel  {
         for(String algor : algorArray) {
             algorCombo.addItem(algor);
         }
+
         algorCombo.setFont(new Font("TimesRoman", Font.PLAIN, 14));
         algorCombo.setBounds(130, 330, 280, 25);
         this.add(algorCombo);
