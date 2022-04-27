@@ -11,7 +11,7 @@ import javax.swing.*;
 public class MainInterface extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
-    private static final int HEIGHT = 700;
+    private static final int HEIGHT = 770;
 
     private CardLayout card;
     private JPanel mainPanel, cardPane;
@@ -49,10 +49,13 @@ public class MainInterface extends JFrame implements ActionListener {
         addPlayButton();
         addTrainButton();
         addOnlineButton();
+        addExitButton();
     }
 
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
+        playButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        playButton.setPreferredSize(new Dimension(400,170));
         playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
         playButton.addActionListener(e -> {
             cardPane.add(new TicTacToeClient("pve" ,"11", this, training), "MenacePlay");
@@ -63,6 +66,9 @@ public class MainInterface extends JFrame implements ActionListener {
 
     private void addTrainButton() {
         JButton trainButton = new JButton("Train Menace");
+        trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        trainButton.setPreferredSize(new Dimension(400,170));
+        setVisible(true);
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 training = training.run();
@@ -75,11 +81,22 @@ public class MainInterface extends JFrame implements ActionListener {
 
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
+        onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        onlineButton.setPreferredSize(new Dimension(400,170));
         onlineButton.addActionListener(e -> {
             cardPane.add(new TicTacToeClient("pvp" ,"11", this, training), "OnlinePlay");
             card.show(cardPane,"OnlinePlay");
         });
         mainPanel.add(onlineButton);
+    }
+
+
+    private void addExitButton() {
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
+        exitButton.setPreferredSize(new Dimension(400,170));
+        exitButton.addActionListener(e -> System.exit(0));
+        mainPanel.add(exitButton);
     }
 
 
