@@ -16,11 +16,17 @@ public class Training {
     public Training () {
         matchboxs = new Hashtable<>();
         menaces = new Hashtable<List<Integer>,Hashtable>();
-
-//        steps = new Stack();
     }
 
-    private List<Integer> getChessState(Board board,List<Integer> StateList){
+    public Hashtable<List<Integer>, Hashtable> getMenaces() {
+        return menaces;
+    }
+
+    public void setMenaces(Hashtable<List<Integer>, Hashtable> menaces) {
+        this.menaces = menaces;
+    }
+
+    private List<Integer> getChessState(Board board, List<Integer> StateList){
         Hashtable ChessNow= board.getOccupiedMoves();
         Iterator<Integer> StateSet = ChessNow.keySet().iterator();
 
@@ -155,23 +161,40 @@ public class Training {
         System.out.println("winner is: " + board.getWinner());
     }
 
-
-
-    public static void main(String []args) {
-        System.out.println("Training begins...");
-        Training test = new Training();
+    public void preTraining(){
         for(int i =0; i < 10000 ;i++){
             if(i % 100 == 0){
                 System.out.println("round " + i);
             }
             Board trainboard = new Board();
-            test.randomAction(trainboard);
+            randomAction(trainboard);
         }
         System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
-        for(int i = 0;i < 10000; i++){
-            Board board = new Board();
-            test.chooseAction(board);
-        }
+    }
+
+
+
+    public static void main(String []args) {
+        System.out.println("Training begins...");
+        Training test = new Training();
+        test.randomAction(new Board());
+        test.preTraining();
+        System.out.println(test.getMenaces());
+//        for(int i =0; i < 10000 ;i++){
+//            if(i % 100 == 0){
+//                System.out.println("round " + i);
+//            }
+//            Board trainboard = new Board();
+//            test.randomAction(trainboard);
+//        }
+//        System.out.println("Initial training Done!" +"\n\t" + "greedy algorithm training begins...");
+//        for(int i = 0;i < 10000; i++){
+//            Board board = new Board();
+//            test.chooseAction(board);
+//        }
+
+
+
 //        System.out.println("menaces: " + test.menaces);
 
 //        System.out.println(test.menaces);

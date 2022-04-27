@@ -14,6 +14,11 @@ public class Board {
     private State playersTurn;
     private State winner;
     private HashSet<Integer> movesAvailable;
+
+    public int getMoveCount() {
+        return moveCount;
+    }
+
     private int moveCount;
     private boolean gameOver;
     private Hashtable<Integer,State> movesOccupied;
