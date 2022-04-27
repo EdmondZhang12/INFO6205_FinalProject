@@ -31,8 +31,6 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addCarePanel() {
         cardPane.setLayout(card);
         cardPane.add(mainPanel, "main");
-        cardPane.add(new TicTacToeClient("pve" ,"11", this, training), "MenacePlay");
-        cardPane.add(new OnlineMenaceInterface(this),"Challenge");
     }
 
     /**
@@ -51,12 +49,15 @@ public class MainInterface extends JFrame implements ActionListener {
         addPlayButton();
         addTrainButton();
         addOnlineButton();
-        addAcceptChallengeBtn();
     }
 
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
         playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
+        playButton.addActionListener(e -> {
+            cardPane.add(new TicTacToeClient("pve" ,"11", this, training), "MenacePlay");
+            card.show(cardPane,"MenacePlay");
+        });
         mainPanel.add(playButton);
     }
 
@@ -81,13 +82,6 @@ public class MainInterface extends JFrame implements ActionListener {
         mainPanel.add(onlineButton);
     }
 
-    private void addAcceptChallengeBtn() {
-        JButton acceptChallenge = new JButton("Challenge");
-        acceptChallenge.addActionListener(e -> {
-            card.show(cardPane,"Challenge");
-        });
-        mainPanel.add(acceptChallenge);
-    }
 
     public void returnMainPanel () {
         card.show(cardPane,"main");

@@ -274,10 +274,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
                 if (validMove) {
                     if(mode == Mode.PvE) {
                         //Algorithms.miniMax(board);
-                        System.out.println(board.toString());
-
                         int nextStep = training.BestMoveFromTraining(board,training);
-                        System.out.println(nextStep);
+                        board.move(nextStep);
                     } else if(mode == Mode.PvP) {
                         output.format("%d\n", move);
                         output.flush();

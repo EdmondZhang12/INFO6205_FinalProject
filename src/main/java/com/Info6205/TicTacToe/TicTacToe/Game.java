@@ -90,7 +90,6 @@ public class Game {
 
         public void run() {
             try {
-
                 // Tell the first player that it is his/her turn.
                 if (mark == 'X') {
                     output.format("Other player connected. Your move.\n");

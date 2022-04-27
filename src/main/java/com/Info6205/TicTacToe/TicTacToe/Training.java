@@ -201,12 +201,12 @@ public class Training {
             Board board = new Board();
             test.chooseAction(board);
         }
-        System.out.println("menaces: " + test.menaces);
+        //System.out.println("menaces: " + test.menaces);
 
-        System.out.println(test.menaces);
+        //System.out.println(test.menaces);
         Integer firststep[]={0,0,0,0,0,0,0,0,0};
         List<Integer> s1 = new ArrayList(Arrays.asList(firststep));
-        System.out.println(test.menaces.get(s1));
+        //System.out.println("-----------------------------------");
         return test;
     }
 
@@ -247,5 +247,9 @@ public class Training {
         board2.move(7);
         System.out.println(board2.getOccupiedMoves());
         test.BestMoveFromTraining(board2,test);
+    }
+
+    public Hashtable<List<Integer>, Hashtable> getMenaces() {
+        return menaces;
     }
 }
