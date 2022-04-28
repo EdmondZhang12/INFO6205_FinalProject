@@ -12,12 +12,12 @@ import java.util.Stack;
 public class Board {
 
     static final int BOARD_WIDTH = 3;
-    private final State[][] board;
-    private State playersTurn;
-    private State winner;
+    public final State[][] board;
+    public State playersTurn;
+    public State winner;
     private HashSet<Integer> movesAvailable;
 
-    private int moveCount;
+    public int moveCount;
     private boolean gameOver;
     private Hashtable<Integer,State> movesOccupied;
     /**

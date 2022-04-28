@@ -69,8 +69,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
         } else {
             this.mode = Mode.PvE;
             //todo
-            //int nextStep = training.BestMoveFromTraining(board,training);
-            //boolean validMove = board.move(nextStep);
+            int nextStep = training.BestMoveFromTraining(board,training);
+            boolean validMove = board.move(nextStep);
             myTurn = true;
         }
         addReturnBtn();
@@ -258,8 +258,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
                         System.exit(0);
                     }
                 board.reset();
-//                int nextStep = training.BestMoveFromTraining(board,training);
-//                boolean validMove = board.move(nextStep);
+                int nextStep = training.BestMoveFromTraining(board,training);
+                boolean validMove = board.move(nextStep);
                 panel.repaint();
             } else if (myTurn) {
                 playerMove(e);
