@@ -94,6 +94,11 @@ public class TicTacToeClient extends JPanel implements Runnable{
      */
     private void addReturnBtn() {
         JButton returnBtn = new JButton("Back <");
+        returnBtn.setBorder(BorderFactory.createRaisedBevelBorder());
+        returnBtn.setPreferredSize(new Dimension(200,50));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        returnBtn.setFont(font);
+
         returnBtn.addActionListener(e -> {
             if(!board.isGameOver() ) {
                 JOptionPane pane = new JOptionPane();
