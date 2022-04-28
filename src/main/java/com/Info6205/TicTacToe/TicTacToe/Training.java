@@ -1,3 +1,7 @@
+/**
+ * created by Cheryl and Xinlin in 2022
+ * use greedy algorithm to do the training
+ */
 package com.Info6205.TicTacToe.TicTacToe;
 
 import java.util.*;
@@ -18,13 +22,15 @@ public class Training {
         menaces = new Hashtable<List<Integer>, Hashtable>();
     }
 
+    /**
+     * 0 means State.Blank 1 means State.X, 2 means,tate.O
+     */
     private List<Integer> getChessState(Board board, List<Integer> StateList) {
         Hashtable ChessNow = board.getOccupiedMoves();
         Iterator<Integer> StateSet = ChessNow.keySet().iterator();
 
         while (StateSet.hasNext()) {
             Integer position = StateSet.next();
-//            0 means State.Blank 1 means State.X, 2 means,tate.O
             if (ChessNow.get(position) == Board.State.X) {
                 StateList.set(position, 1);
             } else {
@@ -46,10 +52,10 @@ public class Training {
             List<Integer> currentState = getChessState(board, s1);
             Random.run(board);
             List<Integer> nextState = getChessState(board, s2);
-//            System.out.println("next State:" + nextState + "Current state:" + currentState);
+
             steps.put(currentState, nextState);
         }
-//        System.out.println("steps result:" + steps);
+
         double reward = giveReward(board);
         updateStatus(steps, reward);
         return steps;
@@ -95,12 +101,12 @@ public class Training {
         Enumeration<List<Integer>> e = steps.keys();
         while (e.hasMoreElements()) {
             List<Integer> key = e.nextElement();
-//            System.out.println("key:" + key + "value: " + steps.get(key));
+
             Hashtable<List<Integer>, Double> beads;
             if (menaces.containsKey(key)) {
                 beads = menaces.get(key);
                 if (beads.containsKey(steps.get(key))) {
-//                    int i =  beads.get(steps.get(key)) + 1;
+
                     double i = beads.get(steps.get(key));
                     i += lr * (decay_gamma * reward - i);
                     beads.put((List<Integer>) steps.get(key), i);
@@ -109,7 +115,7 @@ public class Training {
             } else {
                 beads = new Hashtable();
                 beads.put((List<Integer>) steps.get(key), (double) 0);
-//                menaces.put(key, beads);
+
             }
             menaces.put(key, beads);
         }
