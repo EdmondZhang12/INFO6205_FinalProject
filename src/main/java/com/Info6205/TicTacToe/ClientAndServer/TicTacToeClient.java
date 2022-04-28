@@ -49,14 +49,16 @@ public class TicTacToeClient extends JPanel implements Runnable{
     private Point[] cells;
     private MainInterface frame;
     private Training training;
+    private int mark;
     /**
      * Construct the Window.
      * @param playMode the game mode (Player vs. Player or Player vs. AI)
      * @param host
      * @param mainInterface
      */
-    public TicTacToeClient(String playMode, String host, MainInterface mainInterface, Training training) {
+    public TicTacToeClient(String playMode, String host, MainInterface mainInterface, Training training, int mark) {
         this.cells = loadCells();
+        this.mark = mark;
         board = new Board();
         panel = createPanel();
         add(panel, BorderLayout.CENTER);
@@ -69,8 +71,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
         } else {
             this.mode = Mode.PvE;
             //todo
-            int nextStep = training.BestMoveFromTraining(board,training);
-            boolean validMove = board.move(nextStep);
+            if(mark == 1){
+                int nextStep = training.BestMoveFromTraining(board,training);
+                boolean validMove = board.move(nextStep);
+            }
             myTurn = true;
         }
         addReturnBtn();
@@ -258,8 +262,10 @@ public class TicTacToeClient extends JPanel implements Runnable{
                         System.exit(0);
                     }
                 board.reset();
-                int nextStep = training.BestMoveFromTraining(board,training);
-                boolean validMove = board.move(nextStep);
+                if(mark == 1) {
+                    int nextStep = training.BestMoveFromTraining(board,training);
+                    boolean validMove = board.move(nextStep);
+                }
                 panel.repaint();
             } else if (myTurn) {
                 playerMove(e);

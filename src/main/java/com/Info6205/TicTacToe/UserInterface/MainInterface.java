@@ -56,9 +56,10 @@ public class MainInterface extends JFrame implements ActionListener {
         JButton playButton = new JButton("Play With Menace");
         playButton.setBorder(BorderFactory.createRaisedBevelBorder());
         playButton.setPreferredSize(new Dimension(400,170));
-        playButton.addActionListener(e -> card.show(cardPane,"MenacePlay"));
         playButton.addActionListener(e -> {
-            cardPane.add(new TicTacToeClient("pve" ,"11", this, training), "MenacePlay");
+            int i = selectMarkOptionDialog();
+            System.out.println(i);
+            cardPane.add(new TicTacToeClient("pve" ,"11", this, training,i), "MenacePlay");
             card.show(cardPane,"MenacePlay");
         });
         mainPanel.add(playButton);
@@ -84,7 +85,7 @@ public class MainInterface extends JFrame implements ActionListener {
         onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
         onlineButton.setPreferredSize(new Dimension(400,170));
         onlineButton.addActionListener(e -> {
-            cardPane.add(new TicTacToeClient("pvp" ,"11", this, training), "OnlinePlay");
+            cardPane.add(new TicTacToeClient("pvp" ,"11", this, training, -1), "OnlinePlay");
             card.show(cardPane,"OnlinePlay");
         });
         mainPanel.add(onlineButton);
@@ -103,6 +104,15 @@ public class MainInterface extends JFrame implements ActionListener {
     public void returnMainPanel () {
         card.show(cardPane,"main");
     }
+
+    private int selectMarkOptionDialog () {
+        Object options[] = {'X', 'O'};
+        int i = JOptionPane.showOptionDialog(null, "Select your mark to play, you cannot change during the game",
+                "Mark Selection",JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        return i;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 

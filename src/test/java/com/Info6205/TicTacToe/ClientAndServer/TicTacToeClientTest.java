@@ -24,7 +24,7 @@ class TicTacToeClientTest {
 
     @Test
     public void loadCellsTest() {
-        TicTacToeClient clientTest = new TicTacToeClient("pve" ,"11",new MainInterface(), new Training());
+        TicTacToeClient clientTest = new TicTacToeClient("pve" ,"11",new MainInterface(), new Training(),1);
         PrivateMethodTester pmt = new PrivateMethodTester(clientTest);
         Point[] cellsTest = (Point[]) pmt.invokePrivate("loadCells");
         assertEquals(cellsTest[0].getX(),109);
