@@ -18,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TicTacToeClientTest {
 
-    @Test
-    public void startClient() {
-    }
 
     @Test
     public void loadCellsTest() {
@@ -55,13 +52,6 @@ class TicTacToeClientTest {
         assertEquals(cellsTest[8].getY(),489);
     }
 
-    @Test
-    public void getMoveTest() {
-    }
 
-    @Test
-    public void distanceTest()  {
-
-    }
 
 }
