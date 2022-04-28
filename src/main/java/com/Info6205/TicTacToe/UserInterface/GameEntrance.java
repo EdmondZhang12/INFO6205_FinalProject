@@ -6,7 +6,7 @@ import javax.swing.*;
  *  Game entrance
  *  @author Shijie Zhang
  */
-public class MainInterfaceTest {
+public class GameEntrance {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MainInterface());
     }
