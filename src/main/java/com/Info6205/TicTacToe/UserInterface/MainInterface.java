@@ -61,10 +61,66 @@ public class MainInterface extends JFrame implements ActionListener {
      * Add the Buttons, like playBtn, TrainBtn etc...
      */
     private void addButton() {
+        addLabel1();
         addPlayButton();
+        addLabel2();
         addTrainButton();
+        addLabel3();
         addOnlineButton();
+        addLabel4();
         addExitButton();
+    }
+
+    private void addLabel1() {
+        JLabel label1 = new JLabel("                                                                                                    ");
+        JLabel label2 = new JLabel("                                                                                                    ");
+        JLabel label3 = new JLabel("                                                                                                    ");
+        JLabel label4 = new JLabel("                                                                                                     TicTacToe                                                                                                     ");
+        Font font = new Font(" ", Font.PLAIN, 30);
+        label4.setFont(font);
+        JLabel label5 = new JLabel("                                                                                                    ");
+        JLabel label6 = new JLabel("                                                                                                    ");
+        JLabel label7 = new JLabel("                                                                                                    ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+        mainPanel.add(label5);
+        mainPanel.add(label6);
+        mainPanel.add(label7);
+    }
+
+    private void addLabel2() {
+        JLabel label1 = new JLabel("                                                                                                    ");
+        JLabel label2 = new JLabel("                                                                                                    ");
+        JLabel label3 = new JLabel("                                                                                                    ");
+        JLabel label4 = new JLabel("                                                                                                    ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+    }
+
+    private void addLabel3() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
+    }
+
+    private void addLabel4() {
+        JLabel label1 = new JLabel("                                                                                                     ");
+        JLabel label2 = new JLabel("                                                                                                     ");
+        JLabel label3 = new JLabel("                                                                                                     ");
+        JLabel label4 = new JLabel("                                                                                                     ");
+        mainPanel.add(label1);
+        mainPanel.add(label2);
+        mainPanel.add(label3);
+        mainPanel.add(label4);
     }
 
     /**
