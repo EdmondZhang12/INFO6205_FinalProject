@@ -74,7 +74,9 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
         playButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        playButton.setPreferredSize(new Dimension(400,170));
+        playButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        playButton.setFont(font);
         playButton.addActionListener(e -> {
             int i = selectMarkOptionDialog();
             cardPane.add(new TicTacToeClient("pve" ,"11", this, training,i), "MenacePlay");
@@ -90,7 +92,9 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addTrainButton() {
         JButton trainButton = new JButton("Train Menace");
         trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        trainButton.setPreferredSize(new Dimension(400,170));
+        trainButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        trainButton.setFont(font);
         setVisible(true);
         trainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -109,7 +113,9 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        onlineButton.setPreferredSize(new Dimension(400,170));
+        onlineButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        onlineButton.setFont(font);
         onlineButton.addActionListener(e -> {
             cardPane.add(new TicTacToeClient("pvp" ,"11", this, training, -1), "OnlinePlay");
             card.show(cardPane,"OnlinePlay");
@@ -124,7 +130,9 @@ public class MainInterface extends JFrame implements ActionListener {
     private void addExitButton() {
         JButton exitButton = new JButton("Exit");
         exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
-        exitButton.setPreferredSize(new Dimension(400,170));
+        exitButton.setPreferredSize(new Dimension(400,100));
+        Font font = new Font(" ", Font.PLAIN, 30);
+        exitButton.setFont(font);
         exitButton.addActionListener(e -> System.exit(0));
         mainPanel.add(exitButton);
     }
