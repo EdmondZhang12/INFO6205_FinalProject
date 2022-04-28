@@ -5,7 +5,7 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
 import java.util.*;
-import com.Info6205.TicTacToe.ArtificialIntelligence.Random;
+import com.Info6205.Util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

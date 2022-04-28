@@ -58,7 +58,6 @@ public class MainInterface extends JFrame implements ActionListener {
         playButton.setPreferredSize(new Dimension(400,170));
         playButton.addActionListener(e -> {
             int i = selectMarkOptionDialog();
-            System.out.println(i);
             cardPane.add(new TicTacToeClient("pve" ,"11", this, training,i), "MenacePlay");
             card.show(cardPane,"MenacePlay");
         });

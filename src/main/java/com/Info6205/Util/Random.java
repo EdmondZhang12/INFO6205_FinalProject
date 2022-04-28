@@ -1,4 +1,4 @@
-package com.Info6205.TicTacToe.ArtificialIntelligence;
+package com.Info6205.Util;
 
 import com.Info6205.TicTacToe.TicTacToe.Board;
 
