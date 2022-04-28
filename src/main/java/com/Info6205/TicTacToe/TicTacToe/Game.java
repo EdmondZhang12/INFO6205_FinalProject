@@ -38,6 +38,7 @@ public class Game {
         }
         return true;
     }
+
     // thread when player tries a move
     public synchronized boolean legalMove(int location, Player player) {
         if (player == currentPlayer && board[location] == null) {

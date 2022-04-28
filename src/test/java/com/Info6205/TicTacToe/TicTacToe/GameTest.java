@@ -1,11 +1,9 @@
 package com.Info6205.TicTacToe.TicTacToe;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class GameTest {
 
     Game game;
@@ -13,31 +11,14 @@ class GameTest {
     @Test
     void hasWinner() {
         game = new Game();
-        game.hasWinner();
-        assertEquals(1,game.currentPlayer);
+        assertFalse(game.hasWinner());
     }
 
     @Test
     void boardFilledUp() {
+        game = new Game();
+        assertFalse(game.boardFilledUp());
     }
 
-    @Test
-    void legalMove() {
-    }
 
-    @Test
-    void Player() {
-    }
-
-    @Test
-    void setOpponent() {
-    }
-
-    @Test
-    void otherPlayerMoved() {
-    }
-
-    @Test
-    void run() {
-    }
 }

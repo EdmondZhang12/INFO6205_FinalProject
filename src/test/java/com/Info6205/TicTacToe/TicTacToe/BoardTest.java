@@ -3,7 +3,6 @@ package com.Info6205.TicTacToe.TicTacToe;
 import com.Info6205.Util.PrivateMethodTester;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
