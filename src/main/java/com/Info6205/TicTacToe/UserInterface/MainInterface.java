@@ -8,6 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+/**
+ *  @Description
+ *  The interface of initial game interface
+ *  @author Shijie Zhang and Yucong Liu
+ */
 public class MainInterface extends JFrame implements ActionListener {
 
     private static final int WIDTH = 700;
@@ -17,6 +22,9 @@ public class MainInterface extends JFrame implements ActionListener {
     private JPanel mainPanel, cardPane;
     private Training training;
 
+    /**
+     * construct the mainInterface
+     */
     public MainInterface() {
         mainPanel = new JPanel();
         cardPane = new JPanel();
@@ -28,6 +36,10 @@ public class MainInterface extends JFrame implements ActionListener {
         this.add(cardPane);
     }
 
+    /**
+     * Add careLayout
+     * then can switch JPanel by card
+     */
     private void addCarePanel() {
         cardPane.setLayout(card);
         cardPane.add(mainPanel, "main");
@@ -45,6 +57,9 @@ public class MainInterface extends JFrame implements ActionListener {
         setSize(WIDTH,HEIGHT);
     }
 
+    /**
+     * Add the Buttons, like playBtn, TrainBtn etc...
+     */
     private void addButton() {
         addPlayButton();
         addTrainButton();
@@ -52,6 +67,10 @@ public class MainInterface extends JFrame implements ActionListener {
         addExitButton();
     }
 
+    /**
+     * Create the Button for playing with menace
+     * and Add it to MainJPanel
+     */
     private void addPlayButton() {
         JButton playButton = new JButton("Play With Menace");
         playButton.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -64,6 +83,10 @@ public class MainInterface extends JFrame implements ActionListener {
         mainPanel.add(playButton);
     }
 
+    /**
+     * Create the Button for making train to menace
+     * and Add it to MainJPanel
+     */
     private void addTrainButton() {
         JButton trainButton = new JButton("Train Menace");
         trainButton.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -79,6 +102,10 @@ public class MainInterface extends JFrame implements ActionListener {
         mainPanel.add(trainButton);
     }
 
+    /**
+     * Create the Button for playing online
+     * and Add it to MainJPanel
+     */
     private void addOnlineButton() {
         JButton onlineButton = new JButton("Play Online");
         onlineButton.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -90,7 +117,10 @@ public class MainInterface extends JFrame implements ActionListener {
         mainPanel.add(onlineButton);
     }
 
-
+    /**
+     * Create the Button for quit the game
+     * and Add it to MainJPanel
+     */
     private void addExitButton() {
         JButton exitButton = new JButton("Exit");
         exitButton.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -100,10 +130,16 @@ public class MainInterface extends JFrame implements ActionListener {
     }
 
 
+    /**
+     * return to the initial game interface
+     */
     public void returnMainPanel () {
         card.show(cardPane,"main");
     }
 
+    /**
+     * return the result for which mark gamer selected
+     */
     private int selectMarkOptionDialog () {
         Object options[] = {'X', 'O'};
         int i = JOptionPane.showOptionDialog(null, "Select your mark to play, you cannot change during the game",

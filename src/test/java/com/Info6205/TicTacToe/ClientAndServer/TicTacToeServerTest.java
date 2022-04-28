@@ -12,17 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TicTacToeServerTest {
 
-    @Test
-    public void startClient() {
-        TicTacToeServer server = new TicTacToeServer();
-        try {
-            server.run();
-            NetUtil netUtil = new NetUtil();
-            boolean isRunning = netUtil.isLoclePortUsing(12345);
-            assertFalse(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    public void run() throws IOException {
+//        TicTacToeServer server = new TicTacToeServer();
+//        NetUtil netUtil = new NetUtil();
+//        boolean isRunning = netUtil.isLoclePortUsing(12345);
+//        System.out.println(isRunning);
+//        assertFalse(isRunning);
+//    }
 
 }

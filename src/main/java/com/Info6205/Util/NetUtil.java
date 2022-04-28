@@ -7,7 +7,8 @@ import java.net.UnknownHostException;
 
 public class NetUtil {
     /***
-     *  true:already in using  false:not using
+     *  true:already in using
+     *  false:not using
      * @param port
      */
     public static boolean isLoclePortUsing(int port) {

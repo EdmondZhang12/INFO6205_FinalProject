@@ -1,6 +1,5 @@
 package com.Info6205.TicTacToe.ClientAndServer;
 
-import com.Info6205.TicTacToe.ArtificialIntelligence.Algorithms;
 import com.Info6205.TicTacToe.TicTacToe.Board;
 import com.Info6205.TicTacToe.TicTacToe.Training;
 import com.Info6205.TicTacToe.UserInterface.GameInterface;
@@ -18,30 +17,37 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ *  @Description
+ *  the client of online playing
+ *  each client represent a player
+ *  @author Shijie Zhang
+ */
 public class TicTacToeClient extends JPanel implements Runnable{
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
     /**
      * The distance away from the center of a cell that will register
      * as a click.
      */
     private static final int DISTANCE = 100;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 600;
+
     private Board board;
     private final JPanel panel;
     public  Mode mode;
-    private JTextArea displayArea; // JTextArea to display output
-    private JTextField idField; // textfield to display player's mark
+    private JTextArea displayArea;
+    private JTextField idField;
 
     // parameter for server
-    private Socket connection; // connection to server
-    private Scanner input; // input from server
-    private Formatter output; // output to server
-    private final String ticTacToeHost; // host name for server
-    private String myMark; // this client's mark
-    private boolean myTurn; // determines which client's turn it is
-    private final String X_MARK = "X"; // mark for first client
-    private final String O_MARK = "O"; // mark for second client
+    private Socket connection;
+    private Scanner input;
+    private Formatter output;
+    private final String ticTacToeHost;
+    private String myMark;
+    private boolean myTurn;
+    private final String X_MARK = "X";
+    private final String O_MARK = "O";
     /**
      * The center location of each of the cells is stored here.
      * Used for identifying which cell the player has clicked on.
@@ -50,6 +56,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
     private MainInterface frame;
     private Training training;
     private int mark;
+
     /**
      * Construct the Window.
      * @param playMode the game mode (Player vs. Player or Player vs. AI)
@@ -70,10 +77,8 @@ public class TicTacToeClient extends JPanel implements Runnable{
             startClient();
         } else {
             this.mode = Mode.PvE;
-            //todo
             if(mark == 1){
-                int nextStep = training.BestMoveFromTraining(board,training);
-                boolean validMove = board.move(nextStep);
+                boolean validMove = board.move(4);
             }
             myTurn = true;
         }
@@ -155,7 +160,6 @@ public class TicTacToeClient extends JPanel implements Runnable{
             frame.returnMainPanel();
         }
         idField.setText("You are player \"" + myMark + "\"");
-        System.out.println("myMark" + myMark);
         this.repaint();
 
         myTurn = (myMark.equals(X_MARK)); // determine if client's turn
@@ -168,9 +172,12 @@ public class TicTacToeClient extends JPanel implements Runnable{
         }
     }
 
-    // process messages sent to the client
+    /**
+     * process messages sent to the client
+     * @param message the meesge from client
+     */
     private void processMessage(String message) {
-        // valid move occurred
+
         switch (message) {
             case "Valid move.":
                 displayMessage("Valid move, please wait.\n");
@@ -198,14 +205,15 @@ public class TicTacToeClient extends JPanel implements Runnable{
         }
     }
 
-    // manipulate displayArea in event-dispatch thread
+    /**
+     * manipulate displayArea in event-dispatch thread
+     * @param messageToDisplay the message want to display in Area
+     */
     private void displayMessage(final String messageToDisplay) {
         SwingUtilities.invokeLater(() -> {
             displayArea.append(messageToDisplay); // updates output
         });
     }
-
-
 
     /**
      * Load the locations of the center of each of the cells.
@@ -241,11 +249,6 @@ public class TicTacToeClient extends JPanel implements Runnable{
     public enum Mode {PvP, PvE}
 
     /**
-     * Used for drawing Tic Tac Toe to the screen.
-     */
-
-
-    /**
      * For detecting mouse clicks.
      */
     public class MyMouseAdapter extends MouseAdapter {
@@ -263,8 +266,7 @@ public class TicTacToeClient extends JPanel implements Runnable{
                     }
                 board.reset();
                 if(mark == 1) {
-                    int nextStep = training.BestMoveFromTraining(board,training);
-                    boolean validMove = board.move(nextStep);
+                    boolean validMove = board.move(4);
                 }
                 panel.repaint();
             } else if (myTurn) {

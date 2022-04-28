@@ -5,8 +5,18 @@ import com.Info6205.TicTacToe.TicTacToe.Game;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+/**
+ *  @Description
+ *  The server of online playing
+ *  before you play online, have to start it
+ *  @author Shijie Zhang
+ */
 public class TicTacToeServer {
 
+    /**
+     * Run the Server
+     * @throws IOException
+     */
     public void run() throws IOException {
         ServerSocket listener = new ServerSocket(12345);
         System.out.println("Tic Tac Toe Server is Running");

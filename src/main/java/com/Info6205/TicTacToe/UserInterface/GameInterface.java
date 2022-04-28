@@ -9,18 +9,31 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+ *  @Description
+ *  The interface of TicTacToe Game
+ *  including board, and mark
+ *  @author Shijie Zhang and Yucong Liu
+ */
 public class GameInterface extends JPanel {
     private BufferedImage imageBackground, imageX, imageO;
     private Board board;
     private Board.State[][] boardArray;
 
+    /**
+     * Construct the Game Interface
+     * load the image we need
+     */
     public GameInterface() {
         board = new Board();
         boardArray = board.toArray();
         loadImages();
     }
 
+    /**
+     * implement the main painting method
+     * @param g graphics contexts
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -20,6 +20,7 @@ public class Board {
     public int moveCount;
     private boolean gameOver;
     private Hashtable<Integer,State> movesOccupied;
+
     /**
      * Construct the Tic Tac Toe board.
      */
@@ -53,7 +54,6 @@ public class Board {
     /**
      * Restart the game with a new blank board.
      */
-
     public void reset() {
         moveCount = 0;
         gameOver = false;
